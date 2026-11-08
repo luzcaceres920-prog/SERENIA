@@ -34,27 +34,47 @@ function actualizarTextoSonido() {
     texto.setAttribute("value", musica.paused ? "Activar sonido" : "Desactivar sonido");
 }
 
+function cambiarFondo(idFondo) {
+    document.querySelectorAll("a-sky").forEach(function (fondo) {
+        fondo.setAttribute("visible", fondo.id === idFondo);
+    });
+}
+
 function mostrarRecomendacionEstresado() {
     document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "true");
-        document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
+    document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#VERANO").setAttribute("visible", "false");
+    cambiarFondo("skyEspacio");
     reproducirMusica();
     actualizarTextoSonido();
 }
 
 function entrarBosque() {
-    document.querySelector("#verano").setAttribute("visible", "false");
+    // Ocultar todas las pantallas
+    document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
-    document.querySelector("#bosque").setAttribute("visible", "true");
-    document.querySelector("a-sky").setAttribute("src", "#espacio");
-    iniciarRespiracion();
-}
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
 
+    // Ocultar la ambientación de verano
+    document.querySelector("#VERANO").setAttribute("visible", "false");
+
+    // Mostrar el bosque
+    document.querySelector("#bosque").setAttribute("visible", "true");
+
+    // Cambiar el fondo al bosque
+    cambiarFondo("skyBosque");
+
+    // Iniciar las instrucciones de respiración
+    iniciarRespiracion();
+
+    console.log("Entraste al Bosque de Serenia");
+}
 function iniciarRespiracion() {
     const instruccion = document.querySelector("#instruccionRespirar");
     instruccion.setAttribute("value", "INHALA lentamente...");
@@ -73,19 +93,20 @@ function mostrarRecomendacionA() {
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#VERANO").setAttribute("visible", "false");
+    cambiarFondo("skyEspacio");
     reproducirMusica();
     actualizarTextoSonido();
 }
-
-function entrarVerano() {
+function entrarVERANO() {
     document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
     document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "true");
-    document.querySelector("a-sky").setAttribute("src", "#espacio");
+    document.querySelector("#VERANO").setAttribute("visible", "true");
+    cambiarFondo("skyVerano");
 }
 
 function mostrarRecomendacionMCIMS() {
@@ -94,7 +115,9 @@ function mostrarRecomendacionMCIMS() {
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#VERANO").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "true");
+    cambiarFondo("skyEspacio");
 }
 
 
@@ -105,6 +128,8 @@ function mostrarRecomendacionMCIMS() {
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#VERANO").setAttribute("visible", "false");
+    cambiarFondo("skyEspacio");
     reproducirMusica();
     actualizarTextoSonido();
 }
@@ -114,8 +139,15 @@ document.addEventListener("DOMContentLoaded", function () {
     opcion.addEventListener("click", mostrarRecomendacionEstresado);
   });
   document.querySelectorAll("[data-action='bosque']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarBosque);
-  });
+    opcion.addEventListener("click", function () {
+        alert("EL BOTON DEL BOSQUE FUNCIONA");
+        console.log(
+    "Botones del bosque encontrados:",
+    document.querySelectorAll("[data-action='bosque']").length
+);
+        entrarBosque();
+    });
+});
   document.querySelectorAll("[data-action='sonido']").forEach(function (opcion) {
     opcion.addEventListener("click", alternarMusica);
   });
@@ -139,22 +171,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='entrarVerano']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarVerano);
+  document.querySelectorAll("[data-action='VERANO']").forEach(function (opcion) {
+    opcion.addEventListener("click", entrarVERANO);
   });
 });
 
 
-
 function volverInicio() {
+  document.querySelector("#VERANO").setAttribute("visible", "false");
   document.querySelector("#bosque").setAttribute("visible", "false");
-  document.querySelector("#verano").setAttribute("visible", "false");
   document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
   document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
   document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
   document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
   document.querySelector("#inicio").setAttribute("visible", "true");
-  document.querySelector("a-sky").setAttribute("src", "#espacio");
+  cambiarFondo("skyEspacio");
 }
 
 
@@ -175,8 +206,8 @@ function volverInicio() {
     src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80">
 
   <img
-  id="VERANO"
-  src="assets/VERANO.png">
+  id="fondoVERANO"
+  src="assets/VERANO.png">    
 
   <audio
 id="musicaSerenia"
@@ -185,7 +216,9 @@ preload="auto" >
 </audio>
 
 </a-assets>
-<a-sky src = "#espacio" rotation = "0 -90 0 " > </a-sky>
+<a-sky id="skyEspacio" src="#espacio" rotation="0 -90 0"></a-sky>
+<a-sky id="skyBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="skyVerano" src="#fondoVERANO" rotation="0 -90 0" visible="false"></a-sky>
 <a-entity id="inicio">
 
 
@@ -418,7 +451,7 @@ event-set__mouseleave ="color: #74DDED">
     width="2"
     height="0.6"
     depth="0.2"
-    data-action="entrarVerano"
+    data-action="VERANO"
     event-set__mouseenter="color:#FF69B4"
     event-set__mouseleave="color:#74DDED">
   </a-box>
@@ -428,35 +461,48 @@ event-set__mouseleave ="color: #74DDED">
     position="-1.7 -1.5 -2.8"
     color="#FFFFFF"
     width="8"
-    data-action="entrarVerano">
+    data-action="VERANO">
   </a-text>
+
 </a-entity>
 
-<a-entity id="verano" visible="false">
-  <a-image
-    src="#VERANO"
-    position="-1 0 -7"
-    width="40"
-    height="22.5">
-  </a-image>
-  <a-box
-    position="-1 -2.2 -2.8"
+<a-entity id="VERANO" visible="false">
+
+  <a-text 
+    value="BIENVENIDO A VERANO"
+    position="-0.5 1.9 -2.9"
     color="#1b263b"
-    width="2.5"
-    height="0.6"
-    depth="0.2"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#1b263b"
-    data-action="inicio">
-  </a-box>
-  <a-text
-    value="VOLVER AL INICIO"
-    position="-2 -2.2 -2.65"
-    color="#FFFFFF"
-    width="5"
-    data-action="inicio">
+    width="6">
   </a-text>
+
+<a-box
+  position="-0.5 1.9 -3"
+  color="#e6e6fa"
+  width="4.5"
+  height="0.5"
+  depth="0.2"
+></a-box>
+
+<a-text
+  value="Volver al Inicio"
+  position="-4.2 -4 -2.9"
+  color="#d7f3f9"
+  width="5"
+  data-action="inicio">
+</a-text>
+
+<a-box
+  position="-3.5 -4 -3"
+  color="#1b263b"
+  width="1.5"
+  height="0.5"
+  depth="0.2"
+  event-set__mouseenter="color:#1b263b"
+  event-set__mouseleave="color:#74DDED"
+  data-action="inicio">
+</a-box>
 </a-entity>
+
 
 
 <!--eligioestresado-->
@@ -509,6 +555,8 @@ width = "6"
   position="-1.7 -1.5 -2.8"
   color="#FFFFFF"
   width="8"
+    event-set__mouseenter="color:#FF69B4"
+  event-set__mouseleave="color:#74DDED"
   data-action="bosque">
 </a-text>
 
@@ -518,19 +566,12 @@ width = "6"
 
 <a-entity id="bosque" visible="false">
 
-  <a-image
-    src="#bosqueFondo"
-    position="-1 0 -7"
-    width="40"
-    height="22.5">
-  </a-image>
-
   <a-text 
     value="BIENVENIDO A BOSQUE DE SERENIA"
-    position="-0.5 1.9 -2.9"
+    position="-0.5 1.9 -2.85"
     color="#1b263b"
-    width="6"
-    align="center">
+    align="center"
+    width="4.5">
   </a-text>
 
 <a-box
@@ -570,8 +611,7 @@ width = "6"
     value="Sigue el movimiento de la esfera"
     position="-3 -1.9 -3"
     color="#FFFFFF"
-    width="8"
-    aling="center">
+    width="8">
   </a-text>
 
 <a-text 
@@ -690,15 +730,14 @@ data-action="sonido">
 
 
 
-
-
-
-
-
-
-
-
   </a-scene>
 
 </body>
 </html>
+
+
+
+
+
+
+
