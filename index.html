@@ -68,7 +68,7 @@ function entrarBosque() {
     document.querySelector("#bosque").setAttribute("visible", "true");
 
     // Cambiar el fondo al bosque
-    cambiarFondo("skyBosque");
+    cambiarFondo("skyEspacio");
 
     // Iniciar las instrucciones de respiración
     iniciarRespiracion();
@@ -106,7 +106,7 @@ function entrarVERANO() {
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
     document.querySelector("#bosque").setAttribute("visible", "false");
     document.querySelector("#VERANO").setAttribute("visible", "true");
-    cambiarFondo("skyVerano");
+    cambiarFondo("skyEspacio");
 }
 
 function mostrarRecomendacionMCIMS() {
@@ -468,6 +468,13 @@ event-set__mouseleave ="color: #74DDED">
 
 <a-entity id="VERANO" visible="false">
 
+  <a-image
+    src="#fondoVERANO"
+    position="-1 0 -7"
+    width="40"
+    height="22.5">
+  </a-image>
+
   <a-text 
     value="BIENVENIDO A VERANO"
     position="-0.5 1.9 -2.9"
@@ -565,6 +572,13 @@ width = "6"
 <!--mundoestresado-->
 
 <a-entity id="bosque" visible="false">
+
+  <a-image
+    src="#bosqueFondo"
+    position="-1 0 -7"
+    width="40"
+    height="22.5">
+  </a-image>
 
   <a-text 
     value="BIENVENIDO A BOSQUE DE SERENIA"
@@ -716,7 +730,7 @@ data-action="sonido">
 
 
 
-<a-camera position="-1 0 5">
+<a-camera position="-1 0 10">
   <a-cursor
     color="white"
     raycaster="objects: [data-action]">
@@ -730,11 +744,18 @@ data-action="sonido">
 
 
 
+
+
+
+
+
+
+
+
   </a-scene>
 
 </body>
 </html>
-
 
 
 
