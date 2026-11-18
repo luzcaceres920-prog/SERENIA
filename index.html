@@ -95,18 +95,47 @@ function entrarVerano() {
     mostrarFondo("fondoVerano");
     actualizarAccionesCursor();
 }
+
 function entrarJardin() {
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", false);
+
+    document.querySelector("#jardin").setAttribute("visible", true);
+
+    mostrarFondo("fondoJardin");
+
+    const video = document.querySelector("#videoJardin");
+    const esfera = document.querySelector("#fondoJardin");
+
+    esfera.setAttribute("material", {
+        shader: "flat",
+        src: "#videoJardin",
+        side: "back"
+    });
+
+    video.play().then(function() {
+        console.log("Video del jardín reproduciéndose");
+    }).catch(function(error) {
+        console.log("Error al reproducir el jardín:", error);
+    });
+
+    actualizarAccionesCursor();
+}
+
+function entrarinvierno() {
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
     document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#jardin").setAttribute("visible", "true");
-    mostrarFondo("fondoJardin");
-    actualizarAccionesCursor();
-}
-function entrarinvierno() {
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "false");
+    document.querySelector("#jardin").setAttribute("visible", "false");
     document.querySelector("#invierno").setAttribute("visible", "true");
     mostrarFondo("fondoInvierno");
     actualizarAccionesCursor();
@@ -121,6 +150,8 @@ function iniciarRespiracion() {
         }, 4000);
     }, 4000);
 }
+
+
 
 function mostrarRecomendacionA() {
     document.querySelector("#inicio").setAttribute("visible", "false");
@@ -141,11 +172,12 @@ function mostrarRecomendacionMCIMS() {
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
     document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "true");
     document.querySelector("#jardin").setAttribute("visible", "false");
+    document.querySelector("#invierno").setAttribute("visible", "false");
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "true");
+
     actualizarAccionesCursor();
 }
-
 
     function mostrarRecomendacionSobrecargo() {
     document.querySelector("#inicio").setAttribute("visible", "false");
@@ -156,12 +188,63 @@ function mostrarRecomendacionMCIMS() {
     document.querySelector("#bosque").setAttribute("visible", "false");
     document.querySelector("#verano").setAttribute("visible", "false");
     document.querySelector("#jardin").setAttribute("visible", "false");
-    document.querySelector("#invierno").setAttribute("visible", "true");
+    document.querySelector("#invierno").setAttribute("visible", "false");
     actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
+function comenzarActividadVerano() {
+    document.querySelector("#pantallaComenzar").setAttribute("visible", false);
+    document.querySelector("#etapaVista").setAttribute("visible", true);
+    actualizarAccionesCursor();
+}
+let etapaActual = 0;
 
+function continuarVista() {
+
+    const etapas = [
+        {
+            numero: "5",
+            titulo: "OBSERVA TU ENTORNO",
+            instruccion: "Mira a tu alrededor y reconoce 5 cosas que puedas ver."
+        },
+        {
+            numero: "4",
+            titulo: "SIENTE A TU ALREDEDOR",
+            instruccion: "Reconoce 4 cosas que puedas sentir mediante el tacto."
+        },
+        {
+            numero: "3",
+            titulo: "ESCUCHA",
+            instruccion: "Identifica 3 sonidos que puedas escuchar."
+        },
+        {
+            numero: "2",
+            titulo: "RECONOCE AROMAS",
+            instruccion: "Identifica 2 aromas que puedas percibir."
+        },
+        {
+            numero: "1",
+            titulo: "IDENTIFICA UN SABOR",
+            instruccion: "Reconoce 1 sabor que puedas percibir."
+        },
+        {
+            numero: " ",
+            titulo: "¡Has completado el recorrido!",
+            instruccion: "Tomate un momento para respirar tranquilamente y reconocer como te sientes ahora."
+        }
+    ];
+
+        
+       if (etapaActual < 5) {
+        etapaActual++;
+
+        document.querySelector("#numeroSentido").setAttribute("value", etapas[etapaActual].numero);
+        document.querySelector("#tituloSentido").setAttribute("value", etapas[etapaActual].titulo);
+        document.querySelector("#instruccionSentido").setAttribute("value", etapas[etapaActual].instruccion);
+    }
+ 
+}
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-action='recomendacionEstresado']").forEach(function (opcion) {
     opcion.addEventListener("click", mostrarRecomendacionEstresado);
@@ -214,9 +297,16 @@ document.addEventListener("DOMContentLoaded", function () {
     opcion.addEventListener("click", mostrarRecomendacionSobrecargo);
   });
 });
-
-
-
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-action='comenzar']").forEach(function (opcion) {
+        opcion.addEventListener("click", comenzarActividadVerano);
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-action='continuarVista']").forEach(function (opcion) {
+        opcion.addEventListener("click", continuarVista);
+    });
+});
 function volverInicio() {
   document.querySelector("#bosque").setAttribute("visible", "false");
   document.querySelector("#verano").setAttribute("visible", "false");
@@ -226,12 +316,23 @@ function volverInicio() {
   document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
   document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
   document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
+  document.querySelector("#videoJardin").pause();
   document.querySelector("#inicio").setAttribute("visible", "true");
   mostrarFondo("fondoEspacio");
+    etapaActual = 0;
+  document.querySelector("#pantallaComenzar").setAttribute("visible", true);
+  document.querySelector("#etapaVista").setAttribute("visible", false);
+
+  document.querySelector("#numeroSentido").setAttribute("value", "5");
+  document.querySelector("#tituloSentido").setAttribute("value", "OBSERVA TU ENTORNO");
+  document.querySelector("#instruccionSentido").setAttribute("value", "Mira a tu alrededor y reconoce 5 cosas que puedas ver.");
   actualizarAccionesCursor();
 }
-
-
+function mostrarFondo(idFondo) {
+    document.querySelectorAll("a-sky, a-videosphere").forEach(function (fondo) {
+        fondo.setAttribute("visible", fondo.id === idFondo);
+    });
+}
 
 </script>
 </head>
@@ -252,9 +353,20 @@ function volverInicio() {
   id="fondoVerano"
   src="assets/VERANO.png">
 
-  <img
-  id="fondoJardin"
+<img
+  id="imagenJardinRespaldo"
   src="assets/jardin.png">
+
+<video
+  id="videoJardin"
+  src="assets/jardin.mp4"
+  loop
+  muted
+  playsinline
+  webkit-playsinline
+  preload="auto">
+</video>
+
   <img
   id="fondoInvierno"
   src="assets/invierno.png">
@@ -269,12 +381,16 @@ preload="auto">
 <a-sky id="fondoEspacio" src="#espacio" rotation="0 -90 0" visible="true"></a-sky>
 <a-sky id="fondoBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
 <a-sky id="fondoVerano" src="#fondoVerano" rotation="0 -90 0" visible="false"></a-sky>
-<a-sky id="fondoJardin" src="#fondoJardin" rotation="0 -90 0" visible="false"></a-sky>
 <a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 -90 0" visible="false"></a-sky>
-<a-entity id="inicio">
-
+<a-videosphere
+  id="fondoJardin"
+  rotation="0 -90 0"
+  visible="false"
+  material="shader: flat; side: back">
+</a-videosphere>
 
   <!--incio-->
+<a-entity id="inicio" visible="true">
 <a-box
 position = "-1 0 -3.5"
 color = "#D9D1ED"
@@ -556,48 +672,130 @@ event-set__mouseleave ="color: #74DDED">
 </a-entity>
 
 <a-entity id="verano" visible="false">
-  <a-text
-    value="ESPACIO DE VERANO"
-    position="-0.5 1.9 -2.9"
-    color="#1b263b"
-    width="6"
-    align="center">
-  </a-text>
 
-  <a-box
-    position="-0.5 1.9 -3"
-    color="#e6e6fa"
-    width="4.5"
-    height="0.5"
-    depth="0.2">
-  </a-box>
+    <!-- PANTALLA DE BIENVENIDA -->
+    <a-entity id="pantallaComenzar">
 
-  <a-text
-    value="Respira y disfruta de este espacio."
-    position="-2.2 1.2 -3"
-    color="#FFFFFF"
+        <a-text
+            value="ESPACIO DE VERANO"
+            position="-0.5 1.9 -2.9"
+            color="#164E63"
+            width="6"
+            align="center">
+        </a-text>
+
+        <a-box
+            position="-0.5 1.9 -3"
+            color="#F4D7A1"
+            width="4.5"
+            height="0.5"
+            depth="0.2">
+        </a-box>
+
+        <a-text
+            value="Respira y disfruta de este espacio."
+            position="-3 1.2 -3"
+            color="#087E9B"
+            width="8">
+        </a-text>
+
+        <a-text
+            value="COMENZAR"
+            position="-1.6 0 -2.9"
+            color="#FFFFFF"
+            width="10"
+            data-action="comenzar">
+        </a-text>
+
+        <a-box
+            class="ray-target"
+            position="-0.49 0 -3"
+            color="#087E9B"
+            width="3"
+            height="0.5"
+            depth="0.2"
+            data-action="comenzar">
+        </a-box>
+
+    </a-entity>
+    <!-- ETAPA 1: LOS CINCO SENTIDOS -->
+    <a-entity id="etapaVista" visible="false">
+
+    <a-text
+    id="numeroSentido"
+    value="5"
+    position="0 1.3 -3"
+    align="center"
+    color="#F4D7A1"
+    width="8"
+    scale="3 3 3">
+</a-text>
+
+<a-text
+    id="tituloSentido"
+    value="OBSERVA TU ENTORNO"
+    position="0 0.5 -3"
+    align="center"
+    color="	#FFFFFF"
     width="5">
-  </a-text>
+</a-text>
 
-  <a-text
-  class="ray-target"
-    value="Volver al Inicio"
-    position="-4.2 -4 -2.9"
-    color="#d7f3f9"
-    width="5"
-    data-action="inicio">
-  </a-text>
+<a-text
+    id="instruccionSentido"
+    value="Mira a tu alrededor y reconoce 5 cosas que puedas ver."
+    position="0 0 -3"
+    align="center"
+    color="#173B50"
+    width="4">
+</a-text>
 
-  <a-box
-    position="-3.5 -4 -3"
-    color="#1b263b"
-    width="1.5"
-    height="0.5"
-    depth="0.2"
-    event-set__mouseenter="color:#1b263b"
-    event-set__mouseleave="color:#74DDED"
-    data-action="inicio">
-  </a-box>
+
+<a-box
+    position="0 -1.2 -3"
+    width="1.8"
+    height="0.4"
+    depth="0.08"
+    color="#78AFAF"
+    class="ray-target"
+    data-action="continuarVista">
+</a-box>
+
+<a-text
+    value="CONTINUAR"
+    position="0 -1.2 -2.94"
+    align="center"
+    color="#FFFFFF"
+    width="4"
+    class="ray-target"
+    data-action="continuarVista">
+    
+</a-text>
+
+
+
+    </a-entity>
+
+
+    <!-- VOLVER AL INICIO -->
+    <a-text
+        class="ray-target"
+        value="Volver al Inicio"
+        position="-4.2 -4 -2.9"
+        color="#FFFFFF"
+        width="5"
+        data-action="inicio">
+    </a-text>
+
+    <a-box
+        class="ray-target"
+        position="-3.5 -4 -3"
+        color="#164E63"
+        width="1.5"
+        height="0.5"
+        depth="0.2"
+        data-action="inicio">
+    </a-box>
+
 </a-entity>
 
 
@@ -706,7 +904,7 @@ class="ray-target"
 
   <a-text
     value="Sigue el movimiento de la esfera"
-    position="-3 -1.9 -3"
+    position="-0.5 -1.9 -3"
     color="#FFFFFF"
     width="8"
     align="center">
@@ -814,15 +1012,10 @@ data-action="inicio">
 
 </a-entity>
 
-</a-entity>
-
-
-
-
-
-<a-camera position="-1 0 5" look-controls="mouseEnabled: false">
+<a-camera position="-1 0 5" look-controls>
   <a-cursor
     color="white"
+    cursor="rayOrigin: mouse"
     raycaster="objects: .ray-target">
   </a-cursor>
 </a-camera>
@@ -838,7 +1031,6 @@ data-action="inicio">
   laser-controls="hand: left"
   raycaster="objects: .ray-target; far: 10">
 </a-entity>
-
 
   </a-scene>
 
