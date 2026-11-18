@@ -34,46 +34,82 @@ function actualizarTextoSonido() {
     texto.setAttribute("value", musica.paused ? "Activar sonido" : "Desactivar sonido");
 }
 
-function cambiarFondo(idFondo) {
+function mostrarFondo(idFondo) {
     document.querySelectorAll("a-sky").forEach(function (fondo) {
         fondo.setAttribute("visible", fondo.id === idFondo);
     });
 }
 
+function actualizarAccionesCursor() {
+    const escena = document.querySelector("a-scene");
+    const cursor = document.querySelector("a-cursor");
+
+    document.querySelectorAll("[data-action]").forEach(function (opcion) {
+        let contenedor = opcion;
+        let visible = true;
+        while (contenedor && contenedor !== escena) {
+            const valorVisible = contenedor.getAttribute("visible");
+            if (valorVisible === false || valorVisible === "false") {
+                visible = false;
+                break;
+            }
+            contenedor = contenedor.parentElement;
+        }
+        opcion.classList.toggle("ray-target", visible);
+    });
+
+    if (cursor.components.raycaster) {
+        cursor.components.raycaster.refreshObjects();
+    }
+}
+
 function mostrarRecomendacionEstresado() {
     document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "true");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
+        document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#VERANO").setAttribute("visible", "false");
-    cambiarFondo("skyEspacio");
+        document.querySelector("#bosque").setAttribute("visible", "false");
+        document.querySelector("#verano").setAttribute("visible", "false");
+        actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
 
 function entrarBosque() {
-    // Ocultar todas las pantallas
-    document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-
-    // Ocultar la ambientación de verano
-    document.querySelector("#VERANO").setAttribute("visible", "false");
-
-    // Mostrar el bosque
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
+    document.querySelector("#verano").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "true");
-
-    // Cambiar el fondo al bosque
-    cambiarFondo("skyBosque");
-
-    // Iniciar las instrucciones de respiración
+    mostrarFondo("fondoBosque");
+    actualizarAccionesCursor();
     iniciarRespiracion();
+}
 
-    console.log("Entraste al Bosque de Serenia");
+function entrarVerano() {
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
+    document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#verano").setAttribute("visible", "true");
+    mostrarFondo("fondoVerano");
+    actualizarAccionesCursor();
+}
+function entrarJardin() {
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
+    document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#verano").setAttribute("visible", "false");
+    document.querySelector("#JARDIN").setAttribute("visible", "true");
+    mostrarFondo("fondoJardin");
+    actualizarAccionesCursor();
+}
+function entrarinvierno() {
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
+    document.querySelector("#bosque").setAttribute("visible", "false");
+    document.querySelector("#verano").setAttribute("visible", "false");
+    document.querySelector("#INVIERNO").setAttribute("visible", "true");
+    mostrarFondo("fondoInvierno");
+    actualizarAccionesCursor();
 }
 function iniciarRespiracion() {
     const instruccion = document.querySelector("#instruccionRespirar");
@@ -93,31 +129,21 @@ function mostrarRecomendacionA() {
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#VERANO").setAttribute("visible", "false");
-    cambiarFondo("skyEspacio");
+    document.querySelector("#verano").setAttribute("visible", "false");
+    actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
-function entrarVERANO() {
-    document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#VERANO").setAttribute("visible", "true");
-    cambiarFondo("skyVerano");
-}
-
 function mostrarRecomendacionMCIMS() {
     document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#VERANO").setAttribute("visible", "false");
+    document.querySelector("#verano").setAttribute("visible", "false");
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "true");
-    cambiarFondo("skyEspacio");
+    document.querySelector("#JARDIN").setAttribute("visible", "true");
+    actualizarAccionesCursor();
 }
 
 
@@ -128,8 +154,10 @@ function mostrarRecomendacionMCIMS() {
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
     document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#VERANO").setAttribute("visible", "false");
-    cambiarFondo("skyEspacio");
+    document.querySelector("#verano").setAttribute("visible", "false");
+    document.querySelector("#JARDIN").setAttribute("visible", "false");
+    document.querySelector("#INVIERNO").setAttribute("visible", "true");
+    actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
@@ -139,21 +167,37 @@ document.addEventListener("DOMContentLoaded", function () {
     opcion.addEventListener("click", mostrarRecomendacionEstresado);
   });
   document.querySelectorAll("[data-action='bosque']").forEach(function (opcion) {
-    opcion.addEventListener("click", function () {
-        alert("EL BOTON DEL BOSQUE FUNCIONA");
-        console.log(
-    "Botones del bosque encontrados:",
-    document.querySelectorAll("[data-action='bosque']").length
-);
-        entrarBosque();
-    });
-});
+    opcion.addEventListener("click", entrarBosque);
+  });
+  document.querySelectorAll("[data-action='verano']").forEach(function (opcion) {
+    opcion.addEventListener("click", entrarVerano);
+  });
+  document.querySelectorAll("[data-action='jardin']").forEach(function (opcion) {
+    opcion.addEventListener("click", entrarJardin);
+  });
+  document.querySelectorAll("[data-action='invierno']").forEach(function (opcion) {
+    opcion.addEventListener("click", entrarinvierno);
+  });
   document.querySelectorAll("[data-action='sonido']").forEach(function (opcion) {
     opcion.addEventListener("click", alternarMusica);
   });
   document.querySelectorAll("[data-action='inicio']").forEach(function (opcion) {
     opcion.addEventListener("click", volverInicio);
   });
+
+  const escena = document.querySelector("a-scene");
+  const cursor = document.querySelector("a-cursor");
+  escena.addEventListener("enter-vr", function () {
+    cursor.setAttribute("cursor", "rayOrigin", "entity");
+  });
+  escena.addEventListener("exit-vr", function () {
+    cursor.setAttribute("cursor", "rayOrigin", "mouse");
+  });
+  if (escena.hasLoaded) {
+    actualizarAccionesCursor();
+  } else {
+    escena.addEventListener("loaded", actualizarAccionesCursor, { once: true });
+  }
 });
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-action='recomendacionAnsiedad']").forEach(function (opcion) {
@@ -170,22 +214,21 @@ document.addEventListener("DOMContentLoaded", function () {
     opcion.addEventListener("click", mostrarRecomendacionSobrecargo);
   });
 });
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='VERANO']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarVERANO);
-  });
-});
+
 
 
 function volverInicio() {
-  document.querySelector("#VERANO").setAttribute("visible", "false");
   document.querySelector("#bosque").setAttribute("visible", "false");
+  document.querySelector("#verano").setAttribute("visible", "false");
+  document.querySelector("#JARDIN").setAttribute("visible", "false");
+  document.querySelector("#INVIERNO").setAttribute("visible", "false");
   document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
   document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
   document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
   document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
   document.querySelector("#inicio").setAttribute("visible", "true");
-  cambiarFondo("skyEspacio");
+  mostrarFondo("fondoEspacio");
+  actualizarAccionesCursor();
 }
 
 
@@ -206,19 +249,28 @@ function volverInicio() {
     src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80">
 
   <img
-  id="fondoVERANO"
-  src="assets/VERANO.png">    
+  id="VERANO"
+  src="assets/VERANO.png">
+
+  <img
+  id="JARDIN"
+  src="assets/jardin.png">
+  <img
+  id="INVIERNO"
+  src="assets/invierno.png">
 
   <audio
 id="musicaSerenia"
 src="assets/musica.mp3"
-preload="auto" >
+preload="auto">
 </audio>
 
 </a-assets>
-<a-sky id="skyEspacio" src="#espacio" rotation="0 -90 0"></a-sky>
-<a-sky id="skyBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
-<a-sky id="skyVerano" src="#fondoVERANO" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="fondoEspacio" src="#espacio" rotation="0 -90 0" visible="true"></a-sky>
+<a-sky id="fondoBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="fondoVerano" src="#VERANO" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="fondoJardin" src="#JARDIN" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="fondoInvierno" src="#INVIERNO" rotation="0 -90 0" visible="false"></a-sky>
 <a-entity id="inicio">
 
 
@@ -397,18 +449,47 @@ event-set__mouseleave ="color: #74DDED">
     height="0.6"
     depth="0.2"
     event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED">
+    event-set__mouseleave="color:#74DDED"
+    data-action="jardin">
   </a-box>
 
   <a-text
     value="ENTRAR"
     position="-1.7 -1.5 -2.8"
     color="#FFFFFF"
-    width="8">
+    width="8"
+    event-set__mouseenter="color:#FF69B4"
+    event-set__mouseleave="color:#FFFFFF"
+    data-action="jardin">
   </a-text>
 
 </a-entity>
 
+<a-entity id="jardin" visible = "false">
+
+
+  <a-text
+    value="Volver al Inicio"
+    position="-4.2 -4 -2.9"
+    color="#d7f3f9"
+    width="5"
+    event-set__mouseenter="color:#FF69B4"
+    event-set__mouseleave="color:#d7f3f9"
+    data-action="inicio">
+  </a-text>
+
+  <a-box
+    position="-3.5 -4 -3"
+    color="#1b263b"
+    width="1.5"
+    height="0.5"
+    depth="0.2"
+    event-set__mouseenter="color:#1b263b"
+    event-set__mouseleave="color:#74DDED"
+    data-action="inicio">
+  </a-box>
+
+</a-entity>
 
 
 
@@ -451,9 +532,9 @@ event-set__mouseleave ="color: #74DDED">
     width="2"
     height="0.6"
     depth="0.2"
-    data-action="VERANO"
     event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED">
+    event-set__mouseleave="color:#74DDED"
+    data-action="verano">
   </a-box>
 
   <a-text
@@ -461,48 +542,55 @@ event-set__mouseleave ="color: #74DDED">
     position="-1.7 -1.5 -2.8"
     color="#FFFFFF"
     width="8"
-    data-action="VERANO">
+    event-set__mouseenter="color:#FF69B4"
+    event-set__mouseleave="color:#FFFFFF"
+    data-action="verano">
   </a-text>
-
 </a-entity>
 
-<a-entity id="VERANO" visible="false">
-
-  <a-text 
-    value="BIENVENIDO A VERANO"
+<a-entity id="verano" visible="false">
+  <a-text
+    value="ESPACIO DE VERANO"
     position="-0.5 1.9 -2.9"
     color="#1b263b"
-    width="6">
+    width="6"
+    align="center">
   </a-text>
 
-<a-box
-  position="-0.5 1.9 -3"
-  color="#e6e6fa"
-  width="4.5"
-  height="0.5"
-  depth="0.2"
-></a-box>
+  <a-box
+    position="-0.5 1.9 -3"
+    color="#e6e6fa"
+    width="4.5"
+    height="0.5"
+    depth="0.2">
+  </a-box>
 
-<a-text
-  value="Volver al Inicio"
-  position="-4.2 -4 -2.9"
-  color="#d7f3f9"
-  width="5"
-  data-action="inicio">
-</a-text>
+  <a-text
+    value="Respira y disfruta de este espacio."
+    position="-2.2 1.2 -3"
+    color="#FFFFFF"
+    width="5">
+  </a-text>
 
-<a-box
-  position="-3.5 -4 -3"
-  color="#1b263b"
-  width="1.5"
-  height="0.5"
-  depth="0.2"
-  event-set__mouseenter="color:#1b263b"
-  event-set__mouseleave="color:#74DDED"
-  data-action="inicio">
-</a-box>
+  <a-text
+    value="Volver al Inicio"
+    position="-4.2 -4 -2.9"
+    color="#d7f3f9"
+    width="5"
+    data-action="inicio">
+  </a-text>
+
+  <a-box
+    position="-3.5 -4 -3"
+    color="#1b263b"
+    width="1.5"
+    height="0.5"
+    depth="0.2"
+    event-set__mouseenter="color:#1b263b"
+    event-set__mouseleave="color:#74DDED"
+    data-action="inicio">
+  </a-box>
 </a-entity>
-
 
 
 <!--eligioestresado-->
@@ -555,8 +643,8 @@ width = "6"
   position="-1.7 -1.5 -2.8"
   color="#FFFFFF"
   width="8"
-    event-set__mouseenter="color:#FF69B4"
-  event-set__mouseleave="color:#74DDED"
+  event-set__mouseenter="color:#FF69B4"
+  event-set__mouseleave="color:#FFFFFF"
   data-action="bosque">
 </a-text>
 
@@ -568,10 +656,10 @@ width = "6"
 
   <a-text 
     value="BIENVENIDO A BOSQUE DE SERENIA"
-    position="-0.5 1.9 -2.85"
+    position="-0.5 1.9 -2.9"
     color="#1b263b"
-    align="center"
-    width="4.5">
+    width="6"
+    align="center">
   </a-text>
 
 <a-box
@@ -611,7 +699,8 @@ width = "6"
     value="Sigue el movimiento de la esfera"
     position="-3 -1.9 -3"
     color="#FFFFFF"
-    width="8">
+    width="8"
+    align="center">
   </a-text>
 
 <a-text 
@@ -673,66 +762,61 @@ data-action="inicio">
     height="0.6"
     depth="0.2"
     event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED">
+    event-set__mouseleave="color:#74DDED" 
+    data-action="invierno">
   </a-box>
 
   <a-text
     value="ENTRAR"
     position="-1.7 -1.5 -2.8"
     color="#FFFFFF"
-    width="8">
+    width="8"
+   event-set__mouseenter="color:#FF69B4"
+    event-set__mouseleave="color:#74DDED"
+    data-action="invierno">
   </a-text>
 </a-entity>
 
+<a-entity id="invierno" visible=" false">
 
-
-
-</a-entity>
-
-
-<a-text
-id="textoSonido"
-value="Activar sonido"
-position="3 -4  -2.9 "
+<a-text 
+value="Volver al Inicio"
+position="-4.2 -4 -2.9"
 color="#d7f3f9"
 width="5"
-data-action="sonido">
+data-action="inicio">
 </a-text>
 
 <a-box
-position="3.9 -4 -3 "
+position="-3.5 -4 -3 "
 color="#1b263b"
-width="2.2"
+width="1.5"
 height="0.5"
 depth="0.2"
-event-set__mouseenter="color:#FF69B4"
-event-set__mouseleave="color:#2d3a3a"
-data-action="sonido">
+ event-set__mouseenter="color:#1b263b"
+ event-set__mouseleave="color:#74DDED"
+data-action="inicio">
 </a-box>
 
 
 
+</a-entity>
+
+</a-entity>
 
 
 
 
-<a-camera position="-1 0 5">
+
+
+
+<a-camera position="-1 0 5" look-controls="mouseEnabled: false">
   <a-cursor
     color="white"
-    raycaster="objects: [data-action]">
+    cursor="rayOrigin: mouse"
+    raycaster="objects: .ray-target">
   </a-cursor>
 </a-camera>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
