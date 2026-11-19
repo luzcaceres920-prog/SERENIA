@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>SERENIA VR - INICIO </title>
+<meta charset="UTF-8">
+<title>SERENIA VR - INICIO</title>
 
 <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+
 <script>
 
-  
 function reproducirMusica() {
     const musica = document.querySelector("#musicaSerenia");
     musica.volume = 0.3;
@@ -20,22 +20,27 @@ function reproducirMusica() {
 
 function alternarMusica() {
     const musica = document.querySelector("#musicaSerenia");
+
     if (musica.paused) {
         reproducirMusica();
     } else {
         musica.pause();
     }
+
     actualizarTextoSonido();
 }
 
 function actualizarTextoSonido() {
     const texto = document.querySelector("#textoSonido");
     const musica = document.querySelector("#musicaSerenia");
-    texto.setAttribute("value", musica.paused ? "Activar sonido" : "Desactivar sonido");
+
+    if (texto) {
+        texto.setAttribute("value", musica.paused ? "Activar sonido" : "Desactivar sonido");
+    }
 }
 
 function mostrarFondo(idFondo) {
-    document.querySelectorAll("a-sky").forEach(function (fondo) {
+    document.querySelectorAll("a-sky, a-videosphere").forEach(function(fondo) {
         fondo.setAttribute("visible", fondo.id === idFondo);
     });
 }
@@ -44,60 +49,66 @@ function actualizarAccionesCursor() {
     const escena = document.querySelector("a-scene");
     const cursor = document.querySelector("a-cursor");
 
-    document.querySelectorAll("[data-action]").forEach(function (opcion) {
+    document.querySelectorAll("[data-action]").forEach(function(opcion) {
         let contenedor = opcion;
         let visible = true;
+
         while (contenedor && contenedor !== escena) {
             const valorVisible = contenedor.getAttribute("visible");
+
             if (valorVisible === false || valorVisible === "false") {
                 visible = false;
                 break;
             }
+
             contenedor = contenedor.parentElement;
         }
+
         opcion.classList.toggle("ray-target", visible);
     });
 
-    if (cursor.components.raycaster) {
+    if (cursor && cursor.components.raycaster) {
         cursor.components.raycaster.refreshObjects();
     }
 }
 
 function mostrarRecomendacionEstresado() {
-    document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "true");
-        document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-        document.querySelector("#bosque").setAttribute("visible", "false");
-        document.querySelector("#verano").setAttribute("visible", "false");
-        actualizarAccionesCursor();
+    document.querySelector("#inicio").setAttribute("visible", false);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", true);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+
+    actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
 
 function entrarBosque() {
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");  
-    document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "true");
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", true);
+
     mostrarFondo("fondoBosque");
     actualizarAccionesCursor();
     iniciarRespiracion();
 }
 
 function entrarVerano() {
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "true");
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", true);
+
     mostrarFondo("fondoVerano");
     actualizarAccionesCursor();
 }
 
 function entrarJardin() {
-
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
     document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
@@ -109,6 +120,7 @@ function entrarJardin() {
     document.querySelector("#jardin").setAttribute("visible", true);
     document.querySelector("#identificarE").setAttribute("visible", true);
     document.querySelector("#mensajeEmocion").setAttribute("visible", false);
+
     mostrarFondo("fondoJardin");
 
     const video = document.querySelector("#videoJardin");
@@ -126,27 +138,34 @@ function entrarJardin() {
 }
 
 function entrarinvierno() {
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#jardin").setAttribute("visible", "false");
-    document.querySelector("#invierno").setAttribute("visible", "true");
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#jardin").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", true);
+
     mostrarFondo("fondoInvierno");
     actualizarAccionesCursor();
 }
+
 function iniciarRespiracion() {
     const instruccion = document.querySelector("#instruccionRespirar");
+
     instruccion.setAttribute("value", "INHALA lentamente...");
+
     setTimeout(function() {
         instruccion.setAttribute("value", "EXHALA lentamente...");
+
         setTimeout(function() {
             iniciarRespiracion();
         }, 4000);
+
     }, 4000);
 }
+
 function mostrarmensajeemocion(emocion) {
 
     const mensajes = {
@@ -156,24 +175,28 @@ function mostrarmensajeemocion(emocion) {
             color: "#F4D58D",
             fondo: "#FFF1C9"
         },
+
         tristeza: {
             titulo: "TRISTEZA",
             texto: "Esta bien no sentirse bien todo el tiempo. Date un momento para reconocer lo que sientes.",
             color: "#8CB9D9",
             fondo: "#DCECF7"
         },
+
         enojo: {
             titulo: "ENOJO",
-            texto: "TOmate un momento para identificar qué pudo provocarlo y que necesitas ahora.",
+            texto: "Tomate un momento para identificar qué pudo provocarlo y que necesitas ahora.",
             color: "#E99A91",
             fondo: "#FBE0DC"
         },
+
         miedo: {
             titulo: "MIEDO",
             texto: "Reconoce aquello que te preocupa. Puedes avanzar poco a poco.",
             color: "#B6A0D8",
             fondo: "#EAE1F5"
         },
+
         confusion: {
             titulo: "CONFUSION",
             texto: "No siempre tenemos todas las respuestas. Date tiempo para ordenar tus ideas.",
@@ -181,20 +204,14 @@ function mostrarmensajeemocion(emocion) {
             fondo: "#DDF1E8"
         }
     };
-    function volverEmociones() {
-    document.querySelector("#mensajeEmocion").setAttribute("visible", false);
-    document.querySelector("#identificarE").setAttribute("visible", true);
-
-    actualizarAccionesCursor();
-}
 
     const mensaje = mensajes[emocion];
 
+    if (!mensaje) return;
+
     document.querySelector("#tituloEmocion").setAttribute("value", mensaje.titulo);
     document.querySelector("#tituloEmocion").setAttribute("color", mensaje.color);
-
     document.querySelector("#textoEmocion").setAttribute("value", mensaje.texto);
-
     document.querySelector("#fondoMensajeEmocion").setAttribute("color", mensaje.fondo);
 
     document.querySelector("#identificarE").setAttribute("visible", false);
@@ -209,50 +226,57 @@ function volverEmociones() {
 
     actualizarAccionesCursor();
 }
+
 function mostrarRecomendacionA() {
-    document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "true");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "false");
+    document.querySelector("#inicio").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", true);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+
     actualizarAccionesCursor();
     reproducirMusica();
     actualizarTextoSonido();
 }
+
 function mostrarRecomendacionMCIMS() {
-    document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#jardin").setAttribute("visible", "false");
-    document.querySelector("#invierno").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "true");
+    document.querySelector("#inicio").setAttribute("visible", false);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#jardin").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", true);
 
     actualizarAccionesCursor();
 }
 
-    function mostrarRecomendacionSobrecargo() {
-    document.querySelector("#inicio").setAttribute("visible", "false");
-    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "true");
-    document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-    document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-    document.querySelector("#bosque").setAttribute("visible", "false");
-    document.querySelector("#verano").setAttribute("visible", "false");
-    document.querySelector("#jardin").setAttribute("visible", "false");
-    document.querySelector("#invierno").setAttribute("visible", "false");
+function mostrarRecomendacionSobrecargo() {
+    document.querySelector("#inicio").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", true);
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#jardin").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", false);
+
     actualizarAccionesCursor();
     reproducirMusica();
 }
+
 function comenzarActividadVerano() {
     document.querySelector("#pantallaComenzar").setAttribute("visible", false);
     document.querySelector("#etapaVista").setAttribute("visible", true);
+
     actualizarAccionesCursor();
 }
+
 let etapaActual = 0;
 
 function continuarVista() {
@@ -290,985 +314,909 @@ function continuarVista() {
         }
     ];
 
-        
-       if (etapaActual < 5) {
+    if (etapaActual < 5) {
         etapaActual++;
 
         document.querySelector("#numeroSentido").setAttribute("value", etapas[etapaActual].numero);
         document.querySelector("#tituloSentido").setAttribute("value", etapas[etapaActual].titulo);
         document.querySelector("#instruccionSentido").setAttribute("value", etapas[etapaActual].instruccion);
     }
- 
 }
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='recomendacionEstresado']").forEach(function (opcion) {
-    opcion.addEventListener("click", mostrarRecomendacionEstresado);
-  });
-  document.querySelectorAll("[data-action='bosque']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarBosque);
-  });
-  document.querySelectorAll("[data-action='verano']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarVerano);
-  });
-  document.querySelectorAll("[data-action='jardin']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarJardin);
-  });
-  document.querySelectorAll("[data-action='invierno']").forEach(function (opcion) {
-    opcion.addEventListener("click", entrarinvierno);
-  });
-  document.querySelectorAll("[data-action='sonido']").forEach(function (opcion) {
-    opcion.addEventListener("click", alternarMusica);
-  });
-  document.querySelectorAll("[data-action='inicio']").forEach(function (opcion) {
-    opcion.addEventListener("click", volverInicio);
-  });
- document.querySelectorAll("[data-action='seleccionarEmocion']").forEach(function (opcion) {
-    opcion.addEventListener("click", function () {
-        mostrarmensajeemocion(opcion.getAttribute("data-emocion"));
-    });
-});
 
-document.querySelectorAll("[data-action='volverEmociones']").forEach(function (opcion) {
-    opcion.addEventListener("click", volverEmociones);
-});
-
-  const escena = document.querySelector("a-scene");
-  const cursor = document.querySelector("a-cursor");
-  escena.addEventListener("enter-vr", function () {
-    cursor.setAttribute("cursor", "rayOrigin", "entity");
-  });
-  escena.addEventListener("exit-vr", function () {
-    cursor.setAttribute("cursor", "rayOrigin", "mouse");
-  });
-  if (escena.hasLoaded) {
-    actualizarAccionesCursor();
-  } else {
-    escena.addEventListener("loaded", actualizarAccionesCursor, { once: true });
-  }
-});
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='recomendacionAnsiedad']").forEach(function (opcion) {
-    opcion.addEventListener("click", mostrarRecomendacionA);
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='recomendacionMCIMS']").forEach(function (opcion) {
-    opcion.addEventListener("click", mostrarRecomendacionMCIMS);
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-action='recomendacionSobrecargo']").forEach(function (opcion) {
-    opcion.addEventListener("click", mostrarRecomendacionSobrecargo);
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-action='comenzar']").forEach(function (opcion) {
-        opcion.addEventListener("click", comenzarActividadVerano);
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-action='continuarVista']").forEach(function (opcion) {
-        opcion.addEventListener("click", continuarVista);
-    });
-});
 function volverInicio() {
-  document.querySelector("#bosque").setAttribute("visible", "false");
-  document.querySelector("#verano").setAttribute("visible", "false");
-  document.querySelector("#jardin").setAttribute("visible", "false");
-  document.querySelector("#invierno").setAttribute("visible", "false");
-  document.querySelector("#recomendacionEstresado").setAttribute("visible", "false");
-  document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "false");
-  document.querySelector("#recomendacionMCIMS").setAttribute("visible", "false");
-  document.querySelector("#recomendacionSobrecargo").setAttribute("visible", "false");
-  document.querySelector("#videoJardin").pause();
-  document.querySelector("#inicio").setAttribute("visible", "true");
-  mostrarFondo("fondoEspacio");
-    etapaActual = 0;
-  document.querySelector("#pantallaComenzar").setAttribute("visible", true);
-  document.querySelector("#etapaVista").setAttribute("visible", false);
 
-  document.querySelector("#numeroSentido").setAttribute("value", "5");
-  document.querySelector("#tituloSentido").setAttribute("value", "OBSERVA TU ENTORNO");
-  document.querySelector("#instruccionSentido").setAttribute("value", "Mira a tu alrededor y reconoce 5 cosas que puedas ver.");
-  actualizarAccionesCursor();
+    document.querySelector("#bosque").setAttribute("visible", false);
+    document.querySelector("#verano").setAttribute("visible", false);
+    document.querySelector("#jardin").setAttribute("visible", false);
+    document.querySelector("#invierno").setAttribute("visible", false);
+
+    document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
+    document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
+    document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
+    document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
+
+    document.querySelector("#videoJardin").pause();
+
+    document.querySelector("#inicio").setAttribute("visible", true);
+
+    mostrarFondo("fondoEspacio");
+
+    etapaActual = 0;
+
+    document.querySelector("#pantallaComenzar").setAttribute("visible", true);
+    document.querySelector("#etapaVista").setAttribute("visible", false);
+
+    document.querySelector("#numeroSentido").setAttribute("value", "5");
+    document.querySelector("#tituloSentido").setAttribute("value", "OBSERVA TU ENTORNO");
+    document.querySelector("#instruccionSentido").setAttribute("value", "Mira a tu alrededor y reconoce 5 cosas que puedas ver.");
+
+    actualizarAccionesCursor();
 }
-function mostrarFondo(idFondo) {
-    document.querySelectorAll("a-sky, a-videosphere").forEach(function (fondo) {
-        fondo.setAttribute("visible", fondo.id === idFondo);
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const acciones = [
+        ["recomendacionEstresado", mostrarRecomendacionEstresado],
+        ["bosque", entrarBosque],
+        ["verano", entrarVerano],
+        ["jardin", entrarJardin],
+        ["invierno", entrarinvierno],
+        ["sonido", alternarMusica],
+        ["inicio", volverInicio],
+        ["recomendacionAnsiedad", mostrarRecomendacionA],
+        ["recomendacionMCIMS", mostrarRecomendacionMCIMS],
+        ["recomendacionSobrecargo", mostrarRecomendacionSobrecargo],
+        ["comenzar", comenzarActividadVerano],
+        ["continuarVista", continuarVista],
+        ["volverEmociones", volverEmociones]
+    ];
+
+    acciones.forEach(function(accion) {
+        document.querySelectorAll("[data-action='" + accion[0] + "']").forEach(function(opcion) {
+            opcion.addEventListener("click", accion[1]);
+        });
     });
-}
+
+    document.querySelectorAll("[data-action='seleccionarEmocion']").forEach(function(opcion) {
+        opcion.addEventListener("click", function() {
+            mostrarmensajeemocion(opcion.getAttribute("data-emocion"));
+        });
+    });
+
+    const escena = document.querySelector("a-scene");
+    const cursor = document.querySelector("a-cursor");
+
+    escena.addEventListener("enter-vr", function() {
+        cursor.setAttribute("cursor", "rayOrigin", "entity");
+    });
+
+    escena.addEventListener("exit-vr", function() {
+        cursor.setAttribute("cursor", "rayOrigin", "mouse");
+    });
+
+    if (escena.hasLoaded) {
+        actualizarAccionesCursor();
+    } else {
+        escena.addEventListener("loaded", actualizarAccionesCursor, { once: true });
+    }
+});
 
 </script>
 </head>
+
 <body>
-  <a-scene>
-    
-  <a-assets>
 
-  <img
-    id="espacio"
-    src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=1600&q=80">
+<a-scene>
 
-  <img
-    id="bosqueFondo"
-    src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80">
+<a-assets>
 
-  <img
-  id="fondoVerano"
-  src="assets/VERANO.png">
+<img id="espacio"
+src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=1600&q=80">
 
-<img
-  id="imagenJardinRespaldo"
-  src="assets/jardin.png">
+<img id="bosqueFondo"
+src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80">
 
-<video
-  id="videoJardin"
-  src="assets/Jardin.mp4"
-  loop
-  muted
-  playsinline
-  webkit-playsinline
-  preload="auto">
+<img id="fondoVerano" src="assets/VERANO.png">
+
+<img id="imagenJardinRespaldo" src="assets/jardin.png">
+
+<video id="videoJardin"
+src="assets/Jardin.mp4"
+loop muted playsinline webkit-playsinline preload="auto">
 </video>
 
-  <img
-  id="fondoInvierno"
-  src="assets/invierno.png">
+<img id="fondoInvierno" src="assets/invierno.png">
 
-  <audio
-id="musicaSerenia"
-src="assets/musica.mp3"
-preload="auto">
-</audio>
+<audio id="musicaSerenia" src="assets/musica.mp3" preload="auto"></audio>
 
 </a-assets>
+
+<!-- FONDOS 360 -->
+
 <a-sky id="fondoEspacio" src="#espacio" rotation="0 -90 0" visible="true"></a-sky>
+
 <a-sky id="fondoBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
+
 <a-sky id="fondoVerano" src="#fondoVerano" rotation="0 -90 0" visible="false"></a-sky>
+
 <a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 -90 0" visible="false"></a-sky>
-<a-videosphere
-  id="fondoJardin"
-  src="#videoJardin"
-  rotation="0 150 0"
-  visible="false"
-  material="shader: flat; side: back">
+
+<a-videosphere id="fondoJardin"
+src="#videoJardin"
+rotation="0 150 0"
+visible="false"
+material="shader: flat; side: back">
 </a-videosphere>
 
-  <!--incio-->
-<a-entity
-    id="inicio"
-    visible="true"
-    position="-0.4 0 -1.4"
-    scale="0.6 0.6 0.6">
-<a-box
-position="-1 0 -3.5"
+
+<!-- INICIO -->
+
+<a-entity id="inicio"
+visible="true"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-box position="-1 0 -3.5"
 color="#D9D1ED"
 height="5"
 width="4.5"
 depth="0.2">
 </a-box>
 
-
-<a-text
-value= "BIENVENIDO A SERENIA VR"
-Position = " -3.69 3 -2.8"
-color = "#00008B"
-width = "10" >
+<a-text value="BIENVENIDO A SERENIA VR"
+position="-3.69 3 -2.8"
+color="#00008B"
+width="10">
 </a-text>
 
-<a-box 
-position = " -1 3 -3"
-color = "#74DDED"
-height = "1.5"
-width = "6.5"
-depth = "0.2"
-> </a-box>
+<a-box position="-1 3 -3"
+color="#74DDED"
+height="1.5"
+width="6.5"
+depth="0.2">
+</a-box>
 
-<a-text 
-value ="Un espacio para respirar y calmar la mente"
-position = "-2.5 2.5 -2.8"
-color = "#0F5A66"
-width = "4" >
+<a-text value="Un espacio para respirar y calmar la mente"
+position="-2.5 2.5 -2.8"
+color="#0F5A66"
+width="4">
 </a-text>
 
-<a-text
-value = "Como te sientes?"
-position = "-1.7 1.5 -2.8"
-color = "#FFFFE0"
-width = "5" ></a-text>
-
-<a-box 
-position = " -1 1.5 -3"
-color = "#4C909C"
-width = " 3"
-height = "0.4"
-depth = "0.2"
-> </a-box>
-
-<!--seleccion de opciones-->
-<a-text 
-value ="selecciona una opcion"
-position = "-2.1 1 -4"
-width="5" >
+<a-text value="Como te sientes?"
+position="-1.7 1.5 -2.8"
+color="#FFFFE0"
+width="5">
 </a-text>
 
+<a-box position="-1 1.5 -3"
+color="#4C909C"
+width="3"
+height="0.4"
+depth="0.2">
+</a-box>
 
+<a-text value="selecciona una opcion"
+position="-2.1 1 -4"
+width="5">
+</a-text>
 
-<a-text
-value = "ME CUESTA IDENTIFICAR MIS SENTIMIENTOS"
-position = "-3 -1.6 -2.8"
-width = "5"
-color = "white"
+<a-text value="ME CUESTA IDENTIFICAR MIS SENTIMIENTOS"
+position="-3 -1.6 -2.8"
+width="5"
+color="white"
 data-action="recomendacionMCIMS">
 </a-text>
 
-<a-box 
-class="ray-target"
-position ="-0.9 -1.6 -3"
-color = "#74DDED"
-height = "0.5"
-width = "5"  
-depth = "0.2"
+<a-box class="ray-target"
+position="-0.9 -1.6 -3"
+color="#74DDED"
+height="0.5"
+width="5"
+depth="0.2"
 data-action="recomendacionMCIMS"
 event-set__mouseenter="color: #FF69B4"
-event-set__mouseleave ="color: #74DDED">
+event-set__mouseleave="color: #74DDED">
 </a-box>
 
-
-<a-text
-value = "ESTRESADO"
-position = "-1.6 -0.9 -2.8"
-width = "5"
-color = "white"
+<a-text value="ESTRESADO"
+position="-1.6 -0.9 -2.8"
+width="5"
+color="white"
 data-action="recomendacionEstresado">
 </a-text>
 
-<a-box 
-class="ray-target"
-position ="-0.9 -0.9 -3"
-color = "#74DDED"
-height = "0.5"
-width = "5"  
-depth = "0.2"
+<a-box class="ray-target"
+position="-0.9 -0.9 -3"
+color="#74DDED"
+height="0.5"
+width="5"
+depth="0.2"
 data-action="recomendacionEstresado"
 event-set__mouseenter="color: #FF69B4"
-event-set__mouseleave ="color: #74DDED">
+event-set__mouseleave="color: #74DDED">
 </a-box>
 
-<a-text
-value = "ANSIOSO, PREOCUPADO"
-position = " -2 -0.2 -2.8"
-width = "5"
-color = "white"
+<a-text value="ANSIOSO, PREOCUPADO"
+position="-2 -0.2 -2.8"
+width="5"
+color="white"
 data-action="recomendacionAnsiedad">
 </a-text>
 
-<a-box 
-class="ray-target"
-position ="-0.9 -0.2 -3"
-color = "#74DDED"
-height = "0.5"
-width = "5"  
-depth = "0.2"
+<a-box class="ray-target"
+position="-0.9 -0.2 -3"
+color="#74DDED"
+height="0.5"
+width="5"
+depth="0.2"
 data-action="recomendacionAnsiedad"
 event-set__mouseenter="color: #FF69B4"
-event-set__mouseleave ="color: #74DDED">
+event-set__mouseleave="color: #74DDED">
 </a-box>
 
-
-<a-text
-value = "TENGO LA MENTE SOBRECARGADA"
-position = "-2.6 -2.3 -2.8"
-width = "5"
-color = "white"
+<a-text value="TENGO LA MENTE SOBRECARGADA"
+position="-2.6 -2.3 -2.8"
+width="5"
+color="white"
 data-action="recomendacionSobrecargo">
 </a-text>
 
-<a-box
- class="ray-target"
-position ="-0.9 -2.3 -3"
-color = "#74DDED"
-height = "0.5"
-width = "5"  
-depth = "0.2"
+<a-box class="ray-target"
+position="-0.9 -2.3 -3"
+color="#74DDED"
+height="0.5"
+width="5"
+depth="0.2"
 data-action="recomendacionSobrecargo"
 event-set__mouseenter="color: #FF69B4"
-event-set__mouseleave ="color: #74DDED">
+event-set__mouseleave="color: #74DDED">
 </a-box>
 
 </a-entity>
 
 
-<!--eligiomecuestaidentifcar-->
-<a-entity id="recomendacionMCIMS" visible="false">
+<!-- ESPACIO REFLEXIVO: RECOMENDACION -->
 
-<a-box
-    position="-1 -0.5 -3"
-    color="#804454"
-    width="6"
-    height="4"
-    depth="0.2">
-  </a-box>
+<a-entity id="recomendacionMCIMS"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
 
-  <a-text
-    value="Te recomiendo este lugar"
-    position="-2.6 0.2 -2.8"
-    color="#4C909C"
-    width="6">
-  </a-text>
-
-  <a-text
-    value="ESPACIO REFLEXIVO"
-    position="-2.1 -0.2 -2.8"
-    color="#00008B"
-    width="5">
-  </a-text>
-
-  <a-text
-    value="Bienvenido al Espacio pensado para ti para ayudarte a identificar tus sentimientos."
-    position="-3 -0.8 -2.8"
-    color="#333333"
-    width="5">
-  </a-text>
-
-  <a-box
-  class="ray-target"
-    position="-1 -1.5 -2.9"
-    color="#74DDED"
-    width="2"
-    height="0.6"
-    depth="0.2"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED"
-    data-action="jardin">
-  </a-box>
-
-  <a-text
-    value="ENTRAR"
-    position="-1.7 -1.5 -2.8"
-    color="#FFFFFF"
-    width="8"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#FFFFFF"
-    data-action="jardin">
-  </a-text>
-
-</a-entity>
-
-<a-entity id="jardin" visible="false">
-
-  <a-text
-    value="BIENVENIDO AL ESPACIO REFLEXIVO"
-    position="-0.5 1.9 -2.9"
-    color="#82749D"
-    width="6"
-    align="center">
-  </a-text>
-
-  <a-box
-    position="-0.5 1.9 -3"
-    color="#A8B9D8"
-    width="4.5"
-    height="0.5"
-    depth="0.2">
-  </a-box>
-
-  <!-- PANTALLA PARA IDENTIFICAR EMOCIONES -->
-  <a-entity id="identificarE" visible="true">
-
-    <a-text
-      value="¿PUEDES IDENTIFICAR TUS EMOCIONES?"
-      position="-0.5 1 -2.9"
-      color="#B98FA8"
-      width="6"
-      align="center">
-    </a-text>
-
-    <a-box
-      position="-0.5 1 -3"
-      color="#82749D"
-      width="4.5"
-      height="0.5"
-      depth="0.2">
-    </a-box>
-
-    <!-- ALEGRÍA -->
-    <a-text value="Alegría"
-      position="-1 0 -2.9"
-      color="#D8C9EA"
-      width="5"
-      data-action="seleccionarEmocion"
-      data-emocion="alegria">
-    </a-text>
-
-    <a-box position="-0.7 0 -3"
-      color="#82749D"
-      width="1.5" height="0.4" depth="0.2"
-      data-action="seleccionarEmocion"
-      data-emocion="alegria">
-    </a-box>
-
-    <!-- TRISTEZA -->
-    <a-text value="Tristeza"
-      position="-1 -0.7 -2.9"
-      color="#D8C9EA"
-      width="5"
-      data-action="seleccionarEmocion"
-      data-emocion="tristeza">
-    </a-text>
-
-    <a-box position="-0.7 -0.7 -3"
-      color="#82749D"
-      width="1.5" height="0.4" depth="0.2"
-      data-action="seleccionarEmocion"
-      data-emocion="tristeza">
-    </a-box>
-
-    <!-- ENOJO -->
-    <a-text value="Enojo"
-      position="-1 -1.4 -2.9"
-      color="#D8C9EA"
-      width="5"
-      data-action="seleccionarEmocion"
-      data-emocion="enojo">
-    </a-text>
-
-    <a-box position="-0.7 -1.4 -3"
-      color="#82749D"
-      width="1.5" height="0.4" depth="0.2"
-      data-action="seleccionarEmocion"
-      data-emocion="enojo">
-    </a-box>
-
-    <!-- MIEDO -->
-    <a-text value="Miedo"
-      position="-1 -2.1 -2.9"
-      color="#D8C9EA"
-      width="5"
-      data-action="seleccionarEmocion"
-      data-emocion="miedo">
-    </a-text>
-
-    <a-box position="-0.45 -2.1 -3"
-      color="#82749D"
-      width="1.5" height="0.4" depth="0.2"
-      data-action="seleccionarEmocion"
-      data-emocion="miedo">
-    </a-box>
-
-    <!-- CONFUSIÓN -->
-    <a-text value="Confusión"
-      position="-1 -2.8 -2.9"
-      color="#D8C9EA"
-      width="5"
-      data-action="seleccionarEmocion"
-      data-emocion="confusion">
-    </a-text>
-
-    <a-box position="-0.45 -2.8 -3"
-      color="#82749D"
-      width="1.5" height="0.4" depth="0.2"
-      data-action="seleccionarEmocion"
-      data-emocion="confusion">
-    </a-box>
-
-  </a-entity>
-
-  <!-- PANTALLA DE MENSAJES -->
-  <a-entity id="mensajeEmocion" visible="false">
-
-    <!-- TITULO -->
-    <a-text
-        id="tituloEmocion"
-        value=""
-        position="-0.5 1.1 -2.9"
-        color="#82749D"
-        width="6"
-        align="center">
-    </a-text>
-
-    <!-- TARJETA DEL MENSAJE -->
-   <a-box
-    id="fondoMensajeEmocion"
-    position="-0.5 0 -3.1"
-    color="#FFF1C9"
-    width="5"
-    height="2"
-    depth="0.15">
+<a-box position="-1 -0.5 -3"
+color="#804454"
+width="6"
+height="4"
+depth="0.2">
 </a-box>
 
-    <!-- TEXTO CENTRADO -->
-    <a-text
-        id="textoEmocion"
-        value=""
-        position="-0.5 0 -2.9"
-        color="#333333"
-        width="4.2"
-        align="center"
-        anchor="center"
-        baseline="center"
-        wrap-count="35">
-    </a-text>
-
-    <!-- BOTON VOLVER -->
-    <a-box
-        position="-0.5 -1.6 -3"
-        color="#82749D"
-        width="2.5"
-        height="0.5"
-        depth="0.2"
-        data-action="volverEmociones">
-    </a-box>
-
-    <a-text
-        value="VOLVER A EMOCIONES"
-        position="-1.5 -1.6 -2.9"
-        color="#FFFFFF"
-        width="5"
-        data-action="volverEmociones">
-    </a-text>
-
-</a-entity>
-
-
-  <!-- VOLVER AL INICIO -->
-  <a-text
-    value="Volver al Inicio"
-    position="-4.2 -4.4 -2.9"
-    color="#d7f3f9"
-    width="5"
-    data-action="inicio">
-  </a-text>
-
-  <a-box
-    position="-3.5 -4.4 -3"
-    color="#1b263b"
-    width="1.5"
-    height="0.5"
-    depth="0.2"
-    data-action="inicio">
-  </a-box>
-
-</a-entity>
-
-
-
-<!--eligioansiedad-->
-<a-entity id="recomendacionAnsiedad" visible="false">
-  <a-box
-    position="-1 -0.5 -3"
-    color="#804454"
-    width="6"
-    height="4"
-    depth="0.2">
-  </a-box>
-
-  <a-text
-    value="Te recomiendo este lugar"
-    position="-2.6 0.2 -2.8"
-    color="#4C909C"
-    width="6">
-  </a-text>
-
-  <a-text
-    value="ESPACIO CALMANTE"
-    position="-2.1 -0.2 -2.8"
-    color="#00008B"
-    width="5">
-  </a-text>
-
-  <a-text
-    value="Bienvenido al Espacio pensado para ti para calmar tu ansiedad."
-    position="-3 -0.8 -2.8"
-    color="#333333"
-    width="5">
-  </a-text>
-
-  <a-box
-    class="ray-target"
-    position="-1 -1.5 -2.9"
-    color="#74DDED"
-    width="2"
-    height="0.6"
-    depth="0.2"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED"
-    data-action="verano">
-  </a-box>
-
-  <a-text
-    value="ENTRAR"
-    position="-1.7 -1.5 -2.8"
-    color="#FFFFFF"
-    width="8"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#FFFFFF"
-    data-action="verano">
-  </a-text>
-</a-entity>
-
-<a-entity id="verano" visible="false">
-
-    <!-- PANTALLA DE BIENVENIDA -->
-    <a-entity id="pantallaComenzar">
-
-        <a-text
-            value="ESPACIO DE VERANO"
-            position="-0.5 1.9 -2.9"
-            color="#164E63"
-            width="6"
-            align="center">
-        </a-text>
-
-        <a-box
-            position="-0.5 1.9 -3"
-            color="#F4D7A1"
-            width="4.5"
-            height="0.5"
-            depth="0.2">
-        </a-box>
-
-        <a-text
-            value="Respira y disfruta de este espacio."
-            position="-3 1.2 -3"
-            color="#087E9B"
-            width="8">
-        </a-text>
-
-        <a-text
-            value="COMENZAR"
-            position="-1.6 0 -2.9"
-            color="#FFFFFF"
-            width="10"
-            data-action="comenzar">
-        </a-text>
-
-        <a-box
-            class="ray-target"
-            position="-0.49 0 -3"
-            color="#087E9B"
-            width="3"
-            height="0.5"
-            depth="0.2"
-            data-action="comenzar">
-        </a-box>
-
-    </a-entity>
-    <!-- ETAPA 1: LOS CINCO SENTIDOS -->
-    <a-entity id="etapaVista" visible="false">
-
-    <a-text
-    id="numeroSentido"
-    value="5"
-    position="0 1.3 -3"
-    align="center"
-    color="#F4D7A1"
-    width="8"
-    scale="3 3 3">
+<a-text value="Te recomiendo este lugar"
+position="-2.6 0.2 -2.8"
+color="#4C909C"
+width="6">
 </a-text>
 
-<a-text
-    id="tituloSentido"
-    value="OBSERVA TU ENTORNO"
-    position="0 0.5 -3"
-    align="center"
-    color="	#FFFFFF"
-    width="5">
+<a-text value="ESPACIO REFLEXIVO"
+position="-2.1 -0.2 -2.8"
+color="#00008B"
+width="5">
 </a-text>
 
-<a-text
-    id="instruccionSentido"
-    value="Mira a tu alrededor y reconoce 5 cosas que puedas ver."
-    position="0 0 -3"
-    align="center"
-    color="#173B50"
-    width="4">
+<a-text value="Bienvenido al Espacio pensado para ti para ayudarte a identificar tus sentimientos."
+position="-3 -0.8 -2.8"
+color="#333333"
+width="5">
 </a-text>
 
-
-<a-box
-    position="0 -1.2 -3"
-    width="1.8"
-    height="0.4"
-    depth="0.08"
-    color="#78AFAF"
-    class="ray-target"
-    data-action="continuarVista">
+<a-box class="ray-target"
+position="-1 -1.5 -2.9"
+color="#74DDED"
+width="2"
+height="0.6"
+depth="0.2"
+event-set__mouseenter="color:#FF69B4"
+event-set__mouseleave="color:#74DDED"
+data-action="jardin">
 </a-box>
 
-<a-text
-    value="CONTINUAR"
-    position="0 -1.2 -2.94"
-    align="center"
-    color="#FFFFFF"
-    width="4"
-    class="ray-target"
-    data-action="continuarVista">
-    
+<a-text value="ENTRAR"
+position="-1.7 -1.5 -2.8"
+color="#FFFFFF"
+width="8"
+data-action="jardin">
 </a-text>
-
-
-
-    </a-entity>
-
-
-    <!-- VOLVER AL INICIO -->
-    <a-text
-        class="ray-target"
-        value="Volver al Inicio"
-        position="-4.2 -4 -2.9"
-        color="#FFFFFF"
-        width="5"
-        data-action="inicio">
-    </a-text>
-
-    <a-box
-        class="ray-target"
-        position="-3.5 -4 -3"
-        color="#164E63"
-        width="1.5"
-        height="0.5"
-        depth="0.2"
-        data-action="inicio">
-    </a-box>
 
 </a-entity>
 
 
-<!--eligioestresado-->
-<a-entity id="recomendacionEstresado" visible="false">
+<!-- JARDIN -->
 
-<a-box
-  position="-1 -0.5 -3"
-  color="#804454"
-  width="6"
-  height="4"
-  depth="0.2">
+<a-entity id="jardin"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-text value="BIENVENIDO AL ESPACIO REFLEXIVO"
+position="-0.5 1.9 -2.9"
+color="#82749D"
+width="6"
+align="center">
+</a-text>
+
+<a-box position="-0.5 1.9 -3"
+color="#A8B9D8"
+width="4.5"
+height="0.5"
+depth="0.2">
 </a-box>
 
+<a-entity id="identificarE" visible="true">
 
-<a-text 
-value = "Te recomendaria este lugar"
-position ="-2.6 0.2 -2.8"
-color = "#4C909C"
-width = "6"
-></a-text>
-
-<a-text
-  value="BOSQUE DE SERENIA"
-  position="-2.1 -0.2 -2.8"
-  color="#00008B"
-  width="5">
+<a-text value="¿PUEDES IDENTIFICAR TUS EMOCIONES?"
+position="-0.5 1 -2.9"
+color="#B98FA8"
+width="6"
+align="center">
 </a-text>
 
-<a-text
-  value="Un espacio tranquilo rodeado de naturaleza, pensado para respirar, relajarte y despejar la mente."
-  position="-3 -0.8 -2.8"
-  color="#333333"
-  width="5">
+<a-box position="-0.5 1 -3"
+color="#82749D"
+width="4.5"
+height="0.5"
+depth="0.2">
+</a-box>
+
+<!-- ALEGRIA -->
+
+<a-text value="Alegría"
+position="-1 0 -2.9"
+color="#D8C9EA"
+width="5"
+data-action="seleccionarEmocion"
+data-emocion="alegria">
 </a-text>
 
-<a-box
+<a-box position="-0.7 0 -3"
+color="#82749D"
+width="1.5"
+height="0.4"
+depth="0.2"
+data-action="seleccionarEmocion"
+data-emocion="alegria">
+</a-box>
+
+<!-- TRISTEZA -->
+
+<a-text value="Tristeza"
+position="-1 -0.7 -2.9"
+color="#D8C9EA"
+width="5"
+data-action="seleccionarEmocion"
+data-emocion="tristeza">
+</a-text>
+
+<a-box position="-0.7 -0.7 -3"
+color="#82749D"
+width="1.5"
+height="0.4"
+depth="0.2"
+data-action="seleccionarEmocion"
+data-emocion="tristeza">
+</a-box>
+
+<!-- ENOJO -->
+
+<a-text value="Enojo"
+position="-1 -1.4 -2.9"
+color="#D8C9EA"
+width="5"
+data-action="seleccionarEmocion"
+data-emocion="enojo">
+</a-text>
+
+<a-box position="-0.7 -1.4 -3"
+color="#82749D"
+width="1.5"
+height="0.4"
+depth="0.2"
+data-action="seleccionarEmocion"
+data-emocion="enojo">
+</a-box>
+
+<!-- MIEDO -->
+
+<a-text value="Miedo"
+position="-1 -2.1 -2.9"
+color="#D8C9EA"
+width="5"
+data-action="seleccionarEmocion"
+data-emocion="miedo">
+</a-text>
+
+<a-box position="-0.45 -2.1 -3"
+color="#82749D"
+width="1.5"
+height="0.4"
+depth="0.2"
+data-action="seleccionarEmocion"
+data-emocion="miedo">
+</a-box>
+
+<!-- CONFUSION -->
+
+<a-text value="Confusión"
+position="-1 -2.8 -2.9"
+color="#D8C9EA"
+width="5"
+data-action="seleccionarEmocion"
+data-emocion="confusion">
+</a-text>
+
+<a-box position="-0.45 -2.8 -3"
+color="#82749D"
+width="1.5"
+height="0.4"
+depth="0.2"
+data-action="seleccionarEmocion"
+data-emocion="confusion">
+</a-box>
+
+</a-entity>
+
+
+<!-- MENSAJES DE EMOCIONES -->
+
+<a-entity id="mensajeEmocion" visible="false">
+
+<a-text id="tituloEmocion"
+value=""
+position="-0.5 1.1 -2.9"
+color="#82749D"
+width="6"
+align="center">
+</a-text>
+
+<a-box id="fondoMensajeEmocion"
+position="-0.5 0 -3.1"
+color="#FFF1C9"
+width="5"
+height="2"
+depth="0.15">
+</a-box>
+
+<a-text id="textoEmocion"
+value=""
+position="-0.5 0 -2.9"
+color="#333333"
+width="4.2"
+align="center"
+anchor="center"
+baseline="center"
+wrap-count="35">
+</a-text>
+
+<a-box position="-0.5 -1.6 -3"
+color="#82749D"
+width="2.5"
+height="0.5"
+depth="0.2"
+data-action="volverEmociones">
+</a-box>
+
+<a-text value="VOLVER A EMOCIONES"
+position="-1.5 -1.6 -2.9"
+color="#FFFFFF"
+width="5"
+data-action="volverEmociones">
+</a-text>
+
+</a-entity>
+
+<a-text value="Volver al Inicio"
+position="-4.2 -4.4 -2.9"
+color="#d7f3f9"
+width="5"
+data-action="inicio">
+</a-text>
+
+<a-box position="-3.5 -4.4 -3"
+color="#1b263b"
+width="1.5"
+height="0.5"
+depth="0.2"
+data-action="inicio">
+</a-box>
+
+</a-entity>
+
+
+<!-- RECOMENDACION ANSIEDAD -->
+
+<a-entity id="recomendacionAnsiedad"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-box position="-1 -0.5 -3"
+color="#804454"
+width="6"
+height="4"
+depth="0.2">
+</a-box>
+
+<a-text value="Te recomiendo este lugar"
+position="-2.6 0.2 -2.8"
+color="#4C909C"
+width="6">
+</a-text>
+
+<a-text value="ESPACIO CALMANTE"
+position="-2.1 -0.2 -2.8"
+color="#00008B"
+width="5">
+</a-text>
+
+<a-text value="Bienvenido al Espacio pensado para ti para calmar tu ansiedad."
+position="-3 -0.8 -2.8"
+color="#333333"
+width="5">
+</a-text>
+
+<a-box class="ray-target"
+position="-1 -1.5 -2.9"
+color="#74DDED"
+width="2"
+height="0.6"
+depth="0.2"
+data-action="verano">
+</a-box>
+
+<a-text value="ENTRAR"
+position="-1.7 -1.5 -2.8"
+color="#FFFFFF"
+width="8"
+data-action="verano">
+</a-text>
+
+</a-entity>
+
+
+<!-- VERANO -->
+
+<a-entity id="verano"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-entity id="pantallaComenzar">
+
+<a-text value="ESPACIO DE VERANO"
+position="-0.5 1.9 -2.9"
+color="#164E63"
+width="6"
+align="center">
+</a-text>
+
+<a-box position="-0.5 1.9 -3"
+color="#F4D7A1"
+width="4.5"
+height="0.5"
+depth="0.2">
+</a-box>
+
+<a-text value="Respira y disfruta de este espacio."
+position="-3 1.2 -3"
+color="#087E9B"
+width="8">
+</a-text>
+
+<a-text value="COMENZAR"
+position="-1.6 0 -2.9"
+color="#FFFFFF"
+width="10"
+data-action="comenzar">
+</a-text>
+
+<a-box class="ray-target"
+position="-0.49 0 -3"
+color="#087E9B"
+width="3"
+height="0.5"
+depth="0.2"
+data-action="comenzar">
+</a-box>
+
+</a-entity>
+
+
+<!-- ACTIVIDAD CINCO SENTIDOS -->
+
+<a-entity id="etapaVista" visible="false">
+
+<a-text id="numeroSentido"
+value="5"
+position="0 1.3 -3"
+align="center"
+color="#F4D7A1"
+width="8"
+scale="3 3 3">
+</a-text>
+
+<a-text id="tituloSentido"
+value="OBSERVA TU ENTORNO"
+position="0 0.5 -3"
+align="center"
+color="#FFFFFF"
+width="5">
+</a-text>
+
+<a-text id="instruccionSentido"
+value="Mira a tu alrededor y reconoce 5 cosas que puedas ver."
+position="0 0 -3"
+align="center"
+color="#173B50"
+width="4">
+</a-text>
+
+<a-box position="0 -1.2 -3"
+width="1.8"
+height="0.4"
+depth="0.08"
+color="#78AFAF"
 class="ray-target"
-  position="-1 -1.5  -2.9"
-  color="#74DDED"
-  width="2"
-  height="0.6"
-  depth="0.2"
-  event-set__mouseenter="color:#FF69B4"
-  event-set__mouseleave="color:#74DDED"
-  data-action="bosque"
-  >
+data-action="continuarVista">
 </a-box>
 
-<a-text
-  value="ENTRAR"
-  position="-1.7 -1.5 -2.8"
-  color="#FFFFFF"
-  width="8"
-  event-set__mouseenter="color:#FF69B4"
-  event-set__mouseleave="color:#FFFFFF"
-  data-action="bosque">
+<a-text value="CONTINUAR"
+position="0 -1.2 -2.94"
+align="center"
+color="#FFFFFF"
+width="4"
+class="ray-target"
+data-action="continuarVista">
 </a-text>
 
 </a-entity>
 
-<!--mundoestresado-->
 
-<a-entity id="bosque" visible="false">
+<a-text value="Volver al Inicio"
+position="-4.2 -4 -2.9"
+color="#FFFFFF"
+width="5"
+data-action="inicio">
+</a-text>
 
-  <a-text 
-    value="BIENVENIDO A BOSQUE DE SERENIA"
-    position="-0.5 1.9 -2.9"
-    color="#1b263b"
-    width="6"
-    align="center">
-  </a-text>
+<a-box position="-3.5 -4 -3"
+color="#164E63"
+width="1.5"
+height="0.5"
+depth="0.2"
+data-action="inicio">
+</a-box>
 
-<a-box
-  position="-0.5 1.9 -3"
-  color="#e6e6fa"
-  width="4.5"
-  height="0.5"
-  depth="0.2"
-></a-box>
+</a-entity>
 
 
-  <a-text
-  id="instruccionRespirar"
-    value="Preparate para respirar."
-    position="-1.8 1.2 -3"
-    color="#FFFFFF"
-    width="5">
-  </a-text>
+<!-- RECOMENDACION ESTRES -->
+
+<a-entity id="recomendacionEstresado"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-box position="-1 -0.5 -3"
+color="#804454"
+width="6"
+height="4"
+depth="0.2">
+</a-box>
+
+<a-text value="Te recomendaria este lugar"
+position="-2.6 0.2 -2.8"
+color="#4C909C"
+width="6">
+</a-text>
+
+<a-text value="BOSQUE DE SERENIA"
+position="-2.1 -0.2 -2.8"
+color="#00008B"
+width="5">
+</a-text>
+
+<a-text value="Un espacio tranquilo rodeado de naturaleza, pensado para respirar, relajarte y despejar la mente."
+position="-3 -0.8 -2.8"
+color="#333333"
+width="5">
+</a-text>
+
+<a-box class="ray-target"
+position="-1 -1.5 -2.9"
+color="#74DDED"
+width="2"
+height="0.6"
+depth="0.2"
+data-action="bosque">
+</a-box>
+
+<a-text value="ENTRAR"
+position="-1.7 -1.5 -2.8"
+color="#FFFFFF"
+width="8"
+data-action="bosque">
+</a-text>
+
+</a-entity>
 
 
+<!-- BOSQUE DE SERENIA -->
 
-<a-sphere
-    id="esferaRespirar"
-    position="-1 0 -3"
-    radius="0.6"
-    color="#d4e7d3"
-    animation="property: scale;
-               from: 1 1 1;
-               to: 1.8 1.8 1.8;
-               dur: 4000;
-               dir: alternate;
-               loop: true;
-               easing: easeInOutSine">
+<a-entity id="bosque"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-text value="BIENVENIDO A BOSQUE DE SERENIA"
+position="-0.5 1.9 -2.9"
+color="#1b263b"
+width="6"
+align="center">
+</a-text>
+
+<a-box position="-0.5 1.9 -3"
+color="#e6e6fa"
+width="4.5"
+height="0.5"
+depth="0.2">
+</a-box>
+
+<a-text id="instruccionRespirar"
+value="Preparate para respirar."
+position="-1.8 1.2 -3"
+color="#FFFFFF"
+width="5">
+</a-text>
+
+<a-sphere id="esferaRespirar"
+position="-1 0 -3"
+radius="0.6"
+color="#d4e7d3"
+animation="property: scale;
+from: 1 1 1;
+to: 1.8 1.8 1.8;
+dur: 4000;
+dir: alternate;
+loop: true;
+easing: easeInOutSine">
 </a-sphere>
 
-  <a-text
-    value="Sigue el movimiento de la esfera"
-    position="-0.5 -1.9 -3"
-    color="#FFFFFF"
-    width="8"
-    align="center">
-  </a-text>
+<a-text value="Sigue el movimiento de la esfera"
+position="-0.5 -1.9 -3"
+color="#FFFFFF"
+width="8"
+align="center">
+</a-text>
 
-<a-text 
-value="Volver al Inicio"
+<a-text value="Volver al Inicio"
 position="-4.2 -4 -2.9"
 color="#d7f3f9"
 width="5"
 data-action="inicio">
 </a-text>
 
-<a-box 
-class="ray-target"
-position="-3.5 -4 -3 "
+<a-box class="ray-target"
+position="-3.5 -4 -3"
 color="#1b263b"
 width="1.5"
 height="0.5"
 depth="0.2"
- event-set__mouseenter="color:#1b263b"
-  event-set__mouseleave="color:#74DDED"
 data-action="inicio">
 </a-box>
 
 </a-entity>
 
-<!--eligiosobrecargo-->
-<a-entity id="recomendacionSobrecargo" visible="false">
-<a-box
-    position="-1 -0.5 -3"
-    color="#804454"
-    width="6"
-    height="4"
-    depth="0.2">
-  </a-box>
 
-  <a-text
-    value="Te recomiendo este lugar"
-    position="-2.6 0.2 -2.8"
-    color="#4C909C"
-    width="6">
-  </a-text>
+<!-- RECOMENDACION DESCANSO -->
 
-  <a-text
-    value="ESPACIO PARA DESCANSAR"
-    position="-2.1 -0.2 -2.8"
-    color="#00008B"
-    width="5">
-  </a-text>
+<a-entity id="recomendacionSobrecargo"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
 
-  <a-text
-    value="Bienvenido al Espacio pensado para ti para que puedas descansar."
-    position="-3 -0.8 -2.8"
-    color="#333333"
-    width="5">
-  </a-text>
+<a-box position="-1 -0.5 -3"
+color="#804454"
+width="6"
+height="4"
+depth="0.2">
+</a-box>
 
-  <a-box
-  class="ray-target"
-    position="-1 -1.5 -2.9"
-    color="#74DDED"
-    width="2"
-    height="0.6"
-    depth="0.2"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED" 
-    data-action="invierno">
-  </a-box>
+<a-text value="Te recomiendo este lugar"
+position="-2.6 0.2 -2.8"
+color="#4C909C"
+width="6">
+</a-text>
 
-  <a-text
-    value="ENTRAR"
-    position="-1.7 -1.5 -2.8"
-    color="#FFFFFF"
-    width="8"
-   event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#74DDED"
-    data-action="invierno">
-  </a-text>
+<a-text value="ESPACIO PARA DESCANSAR"
+position="-2.1 -0.2 -2.8"
+color="#00008B"
+width="5">
+</a-text>
+
+<a-text value="Bienvenido al Espacio pensado para ti para que puedas descansar."
+position="-3 -0.8 -2.8"
+color="#333333"
+width="5">
+</a-text>
+
+<a-box class="ray-target"
+position="-1 -1.5 -2.9"
+color="#74DDED"
+width="2"
+height="0.6"
+depth="0.2"
+data-action="invierno">
+</a-box>
+
+<a-text value="ENTRAR"
+position="-1.7 -1.5 -2.8"
+color="#FFFFFF"
+width="8"
+data-action="invierno">
+</a-text>
+
 </a-entity>
 
-<a-entity id="invierno" visible=" false">
 
-<a-text 
-value="Volver al Inicio"
+<!-- INVIERNO -->
+
+<a-entity id="invierno"
+visible="false"
+position="-0.4 0 -1.4"
+scale="0.6 0.6 0.6">
+
+<a-text value="Volver al Inicio"
 position="-4.2 -4 -2.9"
 color="#d7f3f9"
 width="5"
 data-action="inicio">
 </a-text>
 
-<a-box
-class="ray-target"
-position="-3.5 -4 -3 "
+<a-box class="ray-target"
+position="-3.5 -4 -3"
 color="#1b263b"
 width="1.5"
 height="0.5"
 depth="0.2"
- event-set__mouseenter="color:#1b263b"
- event-set__mouseleave="color:#74DDED"
 data-action="inicio">
 </a-box>
 
-
-
 </a-entity>
+
+
+<!-- CAMARA -->
 
 <a-camera position="-1 0 8" look-controls>
-  <a-cursor
-    color="white"
-    cursor="rayOrigin: mouse"
-    raycaster="objects: .ray-target">
-  </a-cursor>
+
+<a-cursor
+color="white"
+cursor="rayOrigin: mouse"
+raycaster="objects: .ray-target">
+</a-cursor>
+
 </a-camera>
 
-<!-- Control derecho -->
+
+<!-- CONTROLES VR -->
+
 <a-entity
-  laser-controls="hand: right"
-  raycaster="objects: .ray-target; far: 10">
+laser-controls="hand: right"
+raycaster="objects: .ray-target; far: 10">
 </a-entity>
 
-<!-- Control izquierdo -->
 <a-entity
-  laser-controls="hand: left"
-  raycaster="objects: .ray-target; far: 10">
+laser-controls="hand: left"
+raycaster="objects: .ray-target; far: 10">
 </a-entity>
 
-  </a-scene>
+</a-scene>
 
 </body>
 </html>
