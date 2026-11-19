@@ -146,8 +146,15 @@ function entrarinvierno() {
     document.querySelector("#verano").setAttribute("visible", false);
     document.querySelector("#jardin").setAttribute("visible", false);
     document.querySelector("#invierno").setAttribute("visible", true);
+   mostrarFondo("fondoInvierno");
+const sonido = document.querySelector("#sonidoInvierno");  
+sonido.volume = 0.35;
+sonido.loop = true;
 
-    mostrarFondo("fondoInvierno");
+sonido.play().catch(function(error) {
+    console.log("No se pudo reproducir el sonido:", error);
+});
+  
     actualizarAccionesCursor();
 }
 
@@ -349,7 +356,9 @@ function volverInicio() {
     document.querySelector("#numeroSentido").setAttribute("value", "5");
     document.querySelector("#tituloSentido").setAttribute("value", "OBSERVA TU ENTORNO");
     document.querySelector("#instruccionSentido").setAttribute("value", "Mira a tu alrededor y reconoce 5 cosas que puedas ver.");
-
+const sonido = document.querySelector("#sonidoInvierno");
+sonido.pause();
+sonido.currentTime = 0;
     actualizarAccionesCursor();
 }
 
@@ -429,6 +438,8 @@ loop muted playsinline webkit-playsinline preload="auto">
 
 <audio id="musicaSerenia" src="assets/musica.mp3" preload="auto"></audio>
 
+<audio id="sonidoInvierno" src="assets/chimenea.mp3" preload="auto">
+</audio>
 </a-assets>
 
 <!-- FONDOS 360 -->
@@ -987,7 +998,7 @@ data-action="inicio">
 
 <a-box position="-3.5 -4 -3"
 color="#164E63"
-width="1.5"
+width="2.5"
 height="0.5"
 depth="0.2"
 data-action="inicio">
@@ -1103,9 +1114,9 @@ data-action="inicio">
 </a-text>
 
 <a-box class="ray-target"
-position="-3.5 -4 -3"
+position="-3.3 -4 -3"
 color="#1b263b"
-width="1.5"
+width="2.5"
 height="0.5"
 depth="0.2"
 data-action="inicio">
@@ -1171,7 +1182,59 @@ data-action="invierno">
 visible="false"
 position="-0.4 0 -1.4"
 scale="0.6 0.6 0.6">
+<!-- Bienvenida -->
+<a-text
+  value="BIENVENIDO A TU CABAÑA"
+  font="dejavu"
+    position="-1 2 -2"
+    align="center"
+    color="#FFFFFF"
+    width="6">
+</a-text>
 
+<!-- Instrucción -->
+<a-text
+    value="Tomate un momento para descansar."
+    position="-1 1.2 -2"
+    align="center"
+    color="#F5E6C8"
+    width="5">
+</a-text>
+
+<!-- Mensaje de relajación -->
+<a-text
+    value="Respira tranquilamente. No tienes que hacer nada mas por ahora."
+    position="-1 0.4 -2"
+    align="center"
+    color="#FFFFFF"
+    width="4.5"
+    wrap-count="35">
+</a-text>
+
+<!-- Esfera de respiración -->
+<a-sphere
+    id="esferaInvierno"
+    position="-1 -0.8 -3"
+    radius="0.35"
+    color="#BDEBFA"
+    material="shader: standard; emissive: #8DDCF5; emissiveIntensity: 0.4"
+    animation="
+        property: scale;
+        from: 1 1 1;
+        to: 1.6 1.6 1.6;
+        dur: 3000;
+        dir: alternate;
+        loop: true;
+        easing: easeInOutSine">
+</a-sphere>
+
+<a-text
+    value="Sigue el movimiento de la esfera"
+    position="-1 -1.8 -3"
+    align="center"
+    color="#FFFFFF"
+    width="4">
+</a-text>
 <a-text value="Volver al Inicio"
 position="-4.2 -4 -2.9"
 color="#d7f3f9"
@@ -1180,9 +1243,9 @@ data-action="inicio">
 </a-text>
 
 <a-box class="ray-target"
-position="-3.5 -4 -3"
+position="-3.3 -4 -3"
 color="#1b263b"
-width="1.5"
+width="2.5"
 height="0.5"
 depth="0.2"
 data-action="inicio">
