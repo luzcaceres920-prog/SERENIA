@@ -107,7 +107,8 @@ function entrarJardin() {
     document.querySelector("#verano").setAttribute("visible", false);
 
     document.querySelector("#jardin").setAttribute("visible", true);
-
+    document.querySelector("#identificarE").setAttribute("visible", true);
+    document.querySelector("#mensajeEmocion").setAttribute("visible", false);
     mostrarFondo("fondoJardin");
 
     const video = document.querySelector("#videoJardin");
@@ -146,9 +147,68 @@ function iniciarRespiracion() {
         }, 4000);
     }, 4000);
 }
+function mostrarmensajeemocion(emocion) {
 
+    const mensajes = {
+        alegria: {
+            titulo: "ALEGRIA",
+            texto: "Reconoce aquello que te hace sentir bien y date permiso para disfrutarlo.",
+            color: "#F4D58D",
+            fondo: "#FFF1C9"
+        },
+        tristeza: {
+            titulo: "TRISTEZA",
+            texto: "Esta bien no sentirse bien todo el tiempo. Date un momento para reconocer lo que sientes.",
+            color: "#8CB9D9",
+            fondo: "#DCECF7"
+        },
+        enojo: {
+            titulo: "ENOJO",
+            texto: "TOmate un momento para identificar qué pudo provocarlo y que necesitas ahora.",
+            color: "#E99A91",
+            fondo: "#FBE0DC"
+        },
+        miedo: {
+            titulo: "MIEDO",
+            texto: "Reconoce aquello que te preocupa. Puedes avanzar poco a poco.",
+            color: "#B6A0D8",
+            fondo: "#EAE1F5"
+        },
+        confusion: {
+            titulo: "CONFUSION",
+            texto: "No siempre tenemos todas las respuestas. Date tiempo para ordenar tus ideas.",
+            color: "#91C8B5",
+            fondo: "#DDF1E8"
+        }
+    };
+    function volverEmociones() {
+    document.querySelector("#mensajeEmocion").setAttribute("visible", false);
+    document.querySelector("#identificarE").setAttribute("visible", true);
 
+    actualizarAccionesCursor();
+}
 
+    const mensaje = mensajes[emocion];
+
+    document.querySelector("#tituloEmocion").setAttribute("value", mensaje.titulo);
+    document.querySelector("#tituloEmocion").setAttribute("color", mensaje.color);
+
+    document.querySelector("#textoEmocion").setAttribute("value", mensaje.texto);
+
+    document.querySelector("#fondoMensajeEmocion").setAttribute("color", mensaje.fondo);
+
+    document.querySelector("#identificarE").setAttribute("visible", false);
+    document.querySelector("#mensajeEmocion").setAttribute("visible", true);
+
+    actualizarAccionesCursor();
+}
+
+function volverEmociones() {
+    document.querySelector("#mensajeEmocion").setAttribute("visible", false);
+    document.querySelector("#identificarE").setAttribute("visible", true);
+
+    actualizarAccionesCursor();
+}
 function mostrarRecomendacionA() {
     document.querySelector("#inicio").setAttribute("visible", "false");
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", "true");
@@ -262,6 +322,15 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-action='inicio']").forEach(function (opcion) {
     opcion.addEventListener("click", volverInicio);
   });
+ document.querySelectorAll("[data-action='seleccionarEmocion']").forEach(function (opcion) {
+    opcion.addEventListener("click", function () {
+        mostrarmensajeemocion(opcion.getAttribute("data-emocion"));
+    });
+});
+
+document.querySelectorAll("[data-action='volverEmociones']").forEach(function (opcion) {
+    opcion.addEventListener("click", volverEmociones);
+});
 
   const escena = document.querySelector("a-scene");
   const cursor = document.querySelector("a-cursor");
@@ -376,7 +445,7 @@ preload="auto">
 <a-sky id="fondoEspacio" src="#espacio" rotation="0 -90 0" visible="true"></a-sky>
 <a-sky id="fondoBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
 <a-sky id="fondoVerano" src="#fondoVerano" rotation="0 -90 0" visible="false"></a-sky>
-<a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 150 0" visible="false"></a-sky>
+<a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 -90 0" visible="false"></a-sky>
 <a-videosphere
   id="fondoJardin"
   src="#videoJardin"
@@ -582,149 +651,201 @@ event-set__mouseleave ="color: #74DDED">
 
 </a-entity>
 
-<a-entity id="jardin" visible = "false">
+<a-entity id="jardin" visible="false">
 
-
-<a-text
+  <a-text
     value="BIENVENIDO AL ESPACIO REFLEXIVO"
     position="-0.5 1.9 -2.9"
     color="#82749D"
     width="6"
     align="center">
-    </a-text>
+  </a-text>
 
-    <a-box
+  <a-box
     position="-0.5 1.9 -3"
     color="#A8B9D8"
     width="4.5"
     height="0.5"
     depth="0.2">
+  </a-box>
+
+  <!-- PANTALLA PARA IDENTIFICAR EMOCIONES -->
+  <a-entity id="identificarE" visible="true">
+
+    <a-text
+      value="¿PUEDES IDENTIFICAR TUS EMOCIONES?"
+      position="-0.5 1 -2.9"
+      color="#B98FA8"
+      width="6"
+      align="center">
+    </a-text>
+
+    <a-box
+      position="-0.5 1 -3"
+      color="#82749D"
+      width="4.5"
+      height="0.5"
+      depth="0.2">
     </a-box>
 
-<a-text
-value="Puedes identificar tus emociones?"
-color="	#B98FA8"
-position="-0.5 1 -2.9"
-width="6"
-align="center">
-  </a-text>
+    <!-- ALEGRÍA -->
+    <a-text value="Alegría"
+      position="-1 0 -2.9"
+      color="#D8C9EA"
+      width="5"
+      data-action="seleccionarEmocion"
+      data-emocion="alegria">
+    </a-text>
 
-  <a-box
-  position="-0.5 1 -3"
-    color="#82749D"
-    width="4.5"
-    height="0.5"
-    depth="0.2">
+    <a-box position="-0.7 0 -3"
+      color="#82749D"
+      width="1.5" height="0.4" depth="0.2"
+      data-action="seleccionarEmocion"
+      data-emocion="alegria">
+    </a-box>
+
+    <!-- TRISTEZA -->
+    <a-text value="Tristeza"
+      position="-1 -0.7 -2.9"
+      color="#D8C9EA"
+      width="5"
+      data-action="seleccionarEmocion"
+      data-emocion="tristeza">
+    </a-text>
+
+    <a-box position="-0.7 -0.7 -3"
+      color="#82749D"
+      width="1.5" height="0.4" depth="0.2"
+      data-action="seleccionarEmocion"
+      data-emocion="tristeza">
+    </a-box>
+
+    <!-- ENOJO -->
+    <a-text value="Enojo"
+      position="-1 -1.4 -2.9"
+      color="#D8C9EA"
+      width="5"
+      data-action="seleccionarEmocion"
+      data-emocion="enojo">
+    </a-text>
+
+    <a-box position="-0.7 -1.4 -3"
+      color="#82749D"
+      width="1.5" height="0.4" depth="0.2"
+      data-action="seleccionarEmocion"
+      data-emocion="enojo">
+    </a-box>
+
+    <!-- MIEDO -->
+    <a-text value="Miedo"
+      position="-1 -2.1 -2.9"
+      color="#D8C9EA"
+      width="5"
+      data-action="seleccionarEmocion"
+      data-emocion="miedo">
+    </a-text>
+
+    <a-box position="-0.45 -2.1 -3"
+      color="#82749D"
+      width="1.5" height="0.4" depth="0.2"
+      data-action="seleccionarEmocion"
+      data-emocion="miedo">
+    </a-box>
+
+    <!-- CONFUSIÓN -->
+    <a-text value="Confusión"
+      position="-1 -2.8 -2.9"
+      color="#D8C9EA"
+      width="5"
+      data-action="seleccionarEmocion"
+      data-emocion="confusion">
+    </a-text>
+
+    <a-box position="-0.45 -2.8 -3"
+      color="#82749D"
+      width="1.5" height="0.4" depth="0.2"
+      data-action="seleccionarEmocion"
+      data-emocion="confusion">
+    </a-box>
+
+  </a-entity>
+
+  <!-- PANTALLA DE MENSAJES -->
+  <a-entity id="mensajeEmocion" visible="false">
+
+    <!-- TITULO -->
+    <a-text
+        id="tituloEmocion"
+        value=""
+        position="-0.5 1.1 -2.9"
+        color="#82749D"
+        width="6"
+        align="center">
+    </a-text>
+
+    <!-- TARJETA DEL MENSAJE -->
+   <a-box
+    id="fondoMensajeEmocion"
+    position="-0.5 0 -3.1"
+    color="#FFF1C9"
+    width="5"
+    height="2"
+    depth="0.15">
 </a-box>
 
-<a-text
-    value="Alegria"
-    position="-1 0 -2.9"
-    color="#D8C9EA"
-    width="5">
-  </a-text>
-  <a-box
-  position="-0.7 0 -3"
-    color="#82749D"
-    width="1"
-    height="0.4"
-    depth="0.2">
-</a-box>
+    <!-- TEXTO CENTRADO -->
+    <a-text
+        id="textoEmocion"
+        value=""
+        position="-0.5 0 -2.9"
+        color="#333333"
+        width="4.2"
+        align="center"
+        anchor="center"
+        baseline="center"
+        wrap-count="35">
+    </a-text>
 
-<a-text
-    value="Tristeza"
-    position="-1 -0.7 -2.9"
-    color="#D8C9EAF"
-    width="5">
-  </a-text>
-<a-box
-  position="-0.7 -0.7 -3"
-    color="#82749D"
-    width="1"
-    height="0.4"
-    depth="0.2">
-</a-box>
+    <!-- BOTON VOLVER -->
+    <a-box
+        position="-0.5 -1.6 -3"
+        color="#82749D"
+        width="2.5"
+        height="0.5"
+        depth="0.2"
+        data-action="volverEmociones">
+    </a-box>
 
-<a-text
-    value="Enojo"
-    position="-1 -1.4 -2.9"
-    color="	#D8C9EAF"
-    width="5">
-  </a-text>
-<a-box
-  position="-0.7 -1.4 -3"
-    color="#82749D"
-    width="1"
-    height="0.4"
-    depth="0.2">
-</a-box>
+    <a-text
+        value="VOLVER A EMOCIONES"
+        position="-1.5 -1.6 -2.9"
+        color="#FFFFFF"
+        width="5"
+        data-action="volverEmociones">
+    </a-text>
 
-<a-text
-    value="Miedo"
-    position="-1 -2.1 -2.9"
-    color="#D8C9EAF"
-    width="5">
-  </a-text>
-<a-box
-  position="-0.45 -2.1 -3"
-    color="#82749D"
-    width="1.5"
-    height="0.4"
-    depth="0.2">
-</a-box>
+</a-entity>
 
-<a-text
-    value="Confusion"
-    position="-1 -2.8 -2.9"
-    color="	#D8C9EA"
-    width="5">
-  </a-text>
-<a-box
-  position="-0.45 -2.8 -3"
-    color="#82749D"
-    width="1.5"
-    height="0.4"
-    depth="0.2">
-</a-box>
-<a-text
-    value="Tranquilidad"
-    position="-1 -3.6 -2.9"
-    color="#D8C9EA"
-    width="5">
-  </a-text>
-  <a-box
-  position="-0.45 -3.6 -3"
-    color="#82749D"
-    width="1.5"
-    height="0.4"
-    depth="0.2">
-</a-box>
 
+  <!-- VOLVER AL INICIO -->
   <a-text
     value="Volver al Inicio"
     position="-4.2 -4.4 -2.9"
     color="#d7f3f9"
     width="5"
-    event-set__mouseenter="color:#FF69B4"
-    event-set__mouseleave="color:#d7f3f9"
     data-action="inicio">
   </a-text>
 
   <a-box
-  class="ray-target"
     position="-3.5 -4.4 -3"
     color="#1b263b"
     width="1.5"
     height="0.5"
     depth="0.2"
-    event-set__mouseenter="color:#1b263b"
-    event-set__mouseleave="color:#74DDED"
     data-action="inicio">
   </a-box>
 
 </a-entity>
-
-
 
 
 
@@ -1123,7 +1244,7 @@ data-action="inicio">
 
 </a-entity>
 
-<a-camera position="-1 0 7 look-controls>
+<a-camera position="-1 0 7" look-controls>
   <a-cursor
     color="white"
     cursor="rayOrigin: mouse"
