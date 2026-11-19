@@ -97,6 +97,7 @@ function entrarVerano() {
 }
 
 function entrarJardin() {
+
     document.querySelector("#recomendacionAnsiedad").setAttribute("visible", false);
     document.querySelector("#recomendacionEstresado").setAttribute("visible", false);
     document.querySelector("#recomendacionSobrecargo").setAttribute("visible", false);
@@ -104,25 +105,20 @@ function entrarJardin() {
     document.querySelector("#recomendacionMCIMS").setAttribute("visible", false);
     document.querySelector("#bosque").setAttribute("visible", false);
     document.querySelector("#verano").setAttribute("visible", false);
-    document.querySelector("#invierno").setAttribute("visible", false);
 
     document.querySelector("#jardin").setAttribute("visible", true);
 
     mostrarFondo("fondoJardin");
 
     const video = document.querySelector("#videoJardin");
-    const esfera = document.querySelector("#fondoJardin");
 
-    esfera.setAttribute("material", {
-        shader: "flat",
-        src: "#videoJardin",
-        side: "back"
-    });
+    video.muted = true;
+    video.loop = true;
 
     video.play().then(function() {
-        console.log("Video del jardín reproduciéndose");
+        console.log("Jardín reproduciéndose correctamente");
     }).catch(function(error) {
-        console.log("Error al reproducir el jardín:", error);
+        console.error("Error al reproducir el jardín:", error);
     });
 
     actualizarAccionesCursor();
@@ -359,7 +355,7 @@ function mostrarFondo(idFondo) {
 
 <video
   id="videoJardin"
-  src="assets/jardin.mp4"
+  src="assets/Jardin.mp4"
   loop
   muted
   playsinline
@@ -381,9 +377,10 @@ preload="auto">
 <a-sky id="fondoEspacio" src="#espacio" rotation="0 -90 0" visible="true"></a-sky>
 <a-sky id="fondoBosque" src="#bosqueFondo" rotation="0 -90 0" visible="false"></a-sky>
 <a-sky id="fondoVerano" src="#fondoVerano" rotation="0 -90 0" visible="false"></a-sky>
-<a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 -90 0" visible="false"></a-sky>
+<a-sky id="fondoInvierno" src="#fondoInvierno" rotation="0 150 0" visible="false"></a-sky>
 <a-videosphere
   id="fondoJardin"
+  src="#videoJardin"
   rotation="0 -90 0"
   visible="false"
   material="shader: flat; side: back">
@@ -1033,6 +1030,6 @@ data-action="inicio">
 </a-entity>
 
   </a-scene>
-  
+
 </body>
 </html>
