@@ -1193,28 +1193,26 @@ data-action="inicio">
 
 <!-- CAMARA -->
 
-<a-camera position="-1 0 8" look-controls>
-
-<a-cursor
-color="white"
-cursor="rayOrigin: mouse"
-raycaster="objects: .ray-target">
-</a-cursor>
-
+<a-camera position="-1 0 12.5" look-controls>
+  <a-cursor
+    color="white"
+    cursor="rayOrigin: mouse"
+    raycaster="objects: .ray-target; far: 20">
+  </a-cursor>
 </a-camera>
 
-
-<!-- CONTROLES VR -->
-
+<!-- Control derecho -->
 <a-entity
-laser-controls="hand: right"
-raycaster="objects: .ray-target; far: 10">
+  laser-controls="hand: right"
+  raycaster="objects: .ray-target; far: 20">
 </a-entity>
 
+<!-- Control izquierdo -->
 <a-entity
-laser-controls="hand: left"
-raycaster="objects: .ray-target; far: 10">
+  laser-controls="hand: left"
+  raycaster="objects: .ray-target; far: 20">
 </a-entity>
+
 
 </a-scene>
 
